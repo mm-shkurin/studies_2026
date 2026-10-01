@@ -32,3 +32,10 @@
 - Сохранены файлы: `neo_train.csv`, `neo_test.csv`, `neo_task_processed.csv`, `wine_train.csv`, `wine_test.csv`, `winequality_processed.csv` в `solution/lab1/processed/`.
 - Результат: 6 файлов готовых данных для PyTorch (train/test split для обоих датасетов).
 - Дальше: получить текстовый датасет для Word2Vec; реализовать PyTorch DataLoader и нейросети.
+
+## 2026-10-01 15:15 — упрощён вывод до 2 файлов
+- Сделано: по запросу пользователя ноутбук изменён — сохраняются только 2 файла: `neo_task_processed.csv` и `winequality_processed.csv`. Train/test split убран (будет делаться при загрузке в PyTorch). Убран scikit-learn из requirements.txt.
+- Удалены лишние файлы train/test из `solution/lab1/processed/`.
+- Выполнен прогон ноутбука без ошибок.
+- Результат: 2 обработанных файла для PyTorch.
+- Дальше: получить текстовый датасет для Word2Vec; реализовать PyTorch DataLoader и нейросети.
