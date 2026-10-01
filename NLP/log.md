@@ -13,10 +13,22 @@
 - Дальше: уточнить у преподавателя варианты, сроки, источник датасета.
 
 ## 2026-10-01 14:15 — предобработка датасетов для ЛР 1
-- Сделано: создан ноутбук `solution/lab1/preprocessing.ipynb` для предобработки датасетов; venv `%USERPROFILE%\.venvs\studies2026-nlp` с пакетами (pandas, numpy, matplotlib, seaborn, jupyter); скопированы исходные датасеты в `solution/lab1/datasets/`; выполнена предобработка:
+- Сделано: создан ноутбук `solution/lab1/preprocessing.ipynb` для предобработки датасетов; venv `%USERPROFILE%\.venvs\studies2026-nlp` с пакетами (pandas, numpy, matplotlib, seaborn, jupyter, scikit-learn); скопированы исходные датасеты в `solution/lab1/datasets/`; выполнена предобработка:
   - `neo_task.csv` (классификация): заполнены пропуски в id по name, name по id, числовые столбцы по id; удалены строки с неустранимыми пропусками; hazardous преобразован в int (0/1); оптимизированы типы (float32). Результат: 90 627 строк, баланс классов {0: 81804, 1: 8823}.
   - `winequality-red.csv` + `winequality-white.csv` (регрессия): объединены, удалены 1177 дубликатов, добавлен признак wine_type (0=red, 1=white), типы оптимизированы (float32). Результат: 5320 строк, среднее качество 5.80.
 - Сохранены предобработанные файлы в `solution/lab1/processed/`: `neo_task_processed.csv`, `winequality_processed.csv`. Создан `solution/requirements.txt`.
 - Результат: оба датасета предобработаны, без пропусков, готовы для PyTorch DataLoader.
 - Открыто: текстовый датасет "просьбы жильцов" для Word2Vec отсутствует — требуется от пользователя.
 - Дальше: получить текстовый датасет; приступить к реализации ЛР 1 (нейросети для регрессии и классификации, Word2Vec).
+
+## 2026-10-01 15:00 — улучшена предобработка, добавлен train/test split
+- Сделано: проанализирован исходный ноутбук из материалов; выявлены проблемы (ошибка с hazardous, нет удаления дубликатов, нет train/test split); обновлён ноутбук `solution/lab1/preprocessing.ipynb`:
+  - Исправлена ошибка преобразования hazardous в int (сначала dropna, затем map)
+  - Добавлено удаление 1177 дубликатов в winequality
+  - Добавлен train/test split с stratify для классификации
+  - Упрощён код (убрана проблемная функция unif_id)
+  - Добавлен scikit-learn в requirements.txt
+- Выполнен прогон ноутбука без ошибок.
+- Сохранены файлы: `neo_train.csv`, `neo_test.csv`, `neo_task_processed.csv`, `wine_train.csv`, `wine_test.csv`, `winequality_processed.csv` в `solution/lab1/processed/`.
+- Результат: 6 файлов готовых данных для PyTorch (train/test split для обоих датасетов).
+- Дальше: получить текстовый датасет для Word2Vec; реализовать PyTorch DataLoader и нейросети.
