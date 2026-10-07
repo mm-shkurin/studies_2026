@@ -1,0 +1,19 @@
+@startuml SequencePhase1
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor "Пассажир" as passenger
+participant "BookingUI" as ui <<Boundary>>
+participant "BookingController" as controller <<Control>>
+participant "FlightRepository" as flights <<Entity>>
+participant "SeatRepository" as seats <<Entity>>
+
+passenger -> ui: searchFlights(criteria)
+ui -> controller: findAvailableFlights(criteria)
+controller -> flights: findByCriteria(criteria)
+flights --> controller: availableFlights
+controller -> seats: findAvailableSeats(flights)
+seats --> controller: availableSeats
+controller --> ui: searchResults
+ui --> passenger: showFlights(flights, seats)
+@enduml

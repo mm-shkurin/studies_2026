@@ -1,0 +1,48 @@
+@startuml CollaborationDiagram
+skinparam style strictuml
+
+object "BookingUI" as ui <<Boundary>>
+object "BookingController" as controller <<Control>>
+object "Booking" as booking <<Entity>>
+object "Flight" as flight <<Entity>>
+object "Seat" as seat <<Entity>>
+object "Payment" as payment <<Entity>>
+object "BoardingPass" as boarding_pass <<Entity>>
+
+ui -- controller : 1. searchFlights()
+ui -- controller : 2. selectFlight()
+ui -- controller : 3. selectSeat()
+ui -- controller : 4. confirmBooking()
+ui -- controller : 5. checkin()
+
+controller -- flight : 1.1. findByCriteria()
+controller -- seat : 1.2. findAvailableSeats()
+controller -- seat : 2.1. isAvailable()
+controller -- booking : 2.2. create()
+controller -- booking : 2.3. calculatePrice()
+controller -- payment : 3.1. process()
+controller -- booking : 3.2. setStatus(PAID)
+controller -- booking : 3.3. confirmSeat()
+controller -- booking : 4.1. setStatus(CHECKED_IN)
+controller -- booking : 4.2. recordCheckinTime()
+controller -- boarding_pass : 4.3. generate()
+
+note right of ui
+  1-4: Purchase flow
+  5: Checkin flow
+end note
+
+note right of controller
+  Search flights
+  Find available seats
+  Check availability
+  Create booking
+  Calculate price
+  Process payment
+  Set status PAID
+  Confirm seat
+  Set status CHECKED_IN
+  Record checkin time
+  Generate boarding pass
+end note
+@enduml

@@ -1,0 +1,25 @@
+@startuml 09_key_abstractions
+skinparam style strictuml
+title Ключевые абстракции системы управления аэропортом
+
+package "Предметная область" {
+  class Passenger <<entity>>
+  class Flight <<entity>>
+  class Seat <<entity>>
+  class Booking <<entity>>
+  class Airport <<entity>>
+}
+
+package "Платежи и документы" {
+  class Payment <<entity>>
+  class BoardingPass <<entity>>
+}
+
+Passenger "1" -- "0..*" Booking
+Flight "1" -- "0..*" Booking
+Flight "1" -- "1..*" Seat
+Seat "1" -- "0..1" Booking
+Booking "1" -- "0..1" Payment
+Booking "1" -- "0..1" BoardingPass
+Airport "1" -- "0..*" Flight
+@enduml

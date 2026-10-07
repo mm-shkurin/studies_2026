@@ -1,0 +1,27 @@
+@startuml SequencePhase2
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor "Пассажир" as passenger
+participant "BookingUI" as ui <<Boundary>>
+participant "BookingController" as controller <<Control>>
+participant "Booking" as booking <<Entity>>
+participant "Seat" as seat <<Entity>>
+participant "PricingService" as pricing <<Entity>>
+
+passenger -> ui: selectFlight(selectedFlight)
+ui -> controller: bookSeat(booking, selectedSeat)
+controller -> seat: isAvailable()
+seat --> controller: availability
+alt seat available
+  controller -> booking: create(passenger, flight, seat)
+  controller -> pricing: calculatePrice(booking)
+  pricing --> controller: price
+  controller -> booking: setPrice(price)
+  controller --> ui: bookingConfirmed
+  ui --> passenger: showPrice(price)
+else seat not available
+  controller --> ui: seatUnavailable
+  ui --> passenger: showSeatUnavailable()
+end
+@enduml

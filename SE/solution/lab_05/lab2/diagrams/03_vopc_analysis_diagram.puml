@@ -1,0 +1,89 @@
+@startuml VOPCDiagram
+skinparam style strictuml
+
+class BookingUI <<Boundary>> {
+  + searchFlights(criteria: FlightCriteria)
+  + selectFlight(flight: Flight)
+  + selectSeat(seat: Seat)
+  + confirmBooking()
+  + cancelBooking()
+  + checkin()
+  + getBoardingPass()
+}
+
+class BookingController <<Control>> {
+  + findAvailableFlights(criteria: FlightCriteria): List<Flight>
+  + bookSeat(booking: Booking, seat: Seat): boolean
+  + calculatePrice(booking: Booking): Money
+  + processPayment(booking: Booking, payment: Payment): boolean
+  + completeCheckin(booking: Booking)
+}
+
+class Booking <<Entity>> {
+  - id: String
+  - passenger: Passenger
+  - flight: Flight
+  - seat: Seat
+  - status: BookingStatus
+  - price: Money
+  - bookingTime: DateTime
+  + cancel()
+  + confirm()
+}
+
+class Flight <<Entity>> {
+  - id: String
+  - flightNumber: String
+  - departureTime: DateTime
+  - arrivalTime: DateTime
+  - origin: String
+  - destination: String
+  + isAvailable(): boolean
+}
+
+class Seat <<Entity>> {
+  - id: String
+  - seatNumber: String
+  - row: int
+  - position: String
+  - status: SeatStatus
+  - flight: Flight
+  + isAvailable(): boolean
+}
+
+class Payment <<Entity>> {
+  - id: String
+  - amount: Money
+  - method: PaymentMethod
+  - status: PaymentStatus
+  + process(): boolean
+}
+
+class BoardingPass <<Entity>> {
+  - id: String
+  - booking: Booking
+  - gate: String
+  - seatNumber: String
+  - boardingTime: DateTime
+  + generate()
+}
+
+class Passenger <<Entity>> {
+  - id: String
+  - name: String
+  - passport: String
+  - email: String
+  - phone: String
+}
+
+BookingUI --> BookingController
+BookingController --> Booking
+BookingController --> Flight
+BookingController --> Seat
+BookingController --> Payment
+BookingController --> BoardingPass
+Booking --> Passenger
+Booking --> Flight
+Booking --> Seat
+BoardingPass --> Booking
+@enduml

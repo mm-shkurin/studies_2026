@@ -1,0 +1,36 @@
+@startuml UseCaseDiagram
+skinparam style strictuml
+left to right direction
+
+actor "Пассажир" as passenger
+actor "Система оплаты" as payment_system
+actor "Система бронирования" as booking_system
+actor "Система регистрации" as registration_system
+
+rectangle "Система управления аэропортом" {
+  usecase "Поиск рейсов" as search
+  usecase "Покупка билетов" as purchase
+  usecase "Бронирование билетов" as book
+  usecase "Выбор места" as select_seat
+  usecase "Онлайн регистрация на рейс" as checkin
+  usecase "Управление бронированием" as manage
+  usecase "Получение посадочного талона" as boarding
+  usecase "Отмена регистрации" as cancel_checkin
+}
+
+passenger --> search
+passenger --> purchase
+passenger --> checkin
+passenger --> manage
+passenger --> boarding
+
+purchase ..> search : <<include>>
+purchase ..> book : <<include>>
+purchase ..> payment_system : <<uses>>
+checkin ..> select_seat : <<include>>
+checkin ..> registration_system : <<uses>>
+boarding ..> checkin : <<include>>
+manage ..> purchase : <<extend>>
+manage ..> checkin : <<extend>>
+cancel_checkin ..> checkin : <<extend>>
+@enduml

@@ -1,0 +1,27 @@
+@startuml SequencePhase3
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor "Пассажир" as passenger
+participant "BookingUI" as ui <<Boundary>>
+participant "BookingController" as controller <<Control>>
+participant "Booking" as booking <<Entity>>
+participant "PaymentGateway" as gateway <<Entity>>
+
+passenger -> ui: confirmBooking()
+ui -> controller: processPayment(booking, payment)
+controller -> gateway: process(payment.amount, payment.method)
+gateway --> controller: paymentResult
+
+alt payment successful
+  controller -> booking: setStatus(PAID)
+  controller -> booking: confirmSeat()
+  controller --> ui: paymentConfirmed
+  ui --> passenger: showPaymentSuccess()
+else payment failed
+  controller -> booking: cancel()
+  controller -> booking: releaseSeat()
+  controller --> ui: paymentFailed
+  ui --> passenger: showPaymentError()
+end
+@enduml

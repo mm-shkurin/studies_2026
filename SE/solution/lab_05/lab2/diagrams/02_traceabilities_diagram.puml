@@ -1,0 +1,33 @@
+@startuml 02_traceabilities_diagram
+allowmixing
+skinparam style strictuml
+
+package "Use Cases" {
+  usecase "Покупка билетов" as uc_purchase
+  usecase "Онлайн регистрация на рейс" as uc_checkin
+}
+
+package "Use-Case Realizations" {
+  class "PurchaseRealization" as r_purchase <<use-case realization>>
+  class "CheckinRealization" as r_checkin <<use-case realization>>
+}
+
+package "Design Model" {
+  class BookingController
+  class Booking
+  class Flight
+  class Seat
+  class CheckinController
+  class BoardingPass
+}
+
+r_purchase ..> uc_purchase : <<trace>>
+r_checkin ..> uc_checkin : <<trace>>
+
+r_purchase ..> BookingController
+r_purchase ..> Booking
+r_purchase ..> Flight
+r_purchase ..> Seat
+r_checkin ..> CheckinController
+r_checkin ..> BoardingPass
+@enduml

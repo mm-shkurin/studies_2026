@@ -1,0 +1,17 @@
+@startuml SequencePhase4
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor "Пассажир" as passenger
+participant "BookingUI" as ui <<Boundary>>
+participant "CheckinController" as controller <<Control>>
+participant "Booking" as booking <<Entity>>
+participant "BoardingPass" as boarding_pass <<Entity>>
+
+passenger -> controller: checkin(booking.id)
+controller -> booking: setStatus(CHECKED_IN)
+controller -> booking: recordCheckinTime()
+controller -> boarding_pass: generate(booking)
+boarding_pass --> controller: boardingPass
+controller --> passenger: showBoardingPass(boardingPass)
+@enduml
