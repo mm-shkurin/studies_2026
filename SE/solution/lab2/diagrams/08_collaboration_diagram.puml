@@ -5,9 +5,9 @@ object "RideUI" as ui <<Boundary>>
 object "RideController" as controller <<Control>>
 object "Ride" as ride <<Entity>>
 object "Driver" as driver <<Entity>>
-object "PaymentGateway" as gateway <<Entity>>
-object "LocationService" as location <<Entity>>
-object "PricingService" as pricing <<Entity>>
+object "Vehicle" as vehicle <<Entity>>
+object "Location" as location <<Entity>>
+object "Payment" as payment <<Entity>>
 object "Rating" as rating <<Entity>>
 
 ui -- controller : 1. searchVehicles()
@@ -16,13 +16,14 @@ ui -- controller : 3. confirmRide()
 ui -- controller : 7. rateRide()
 
 controller -- location : 1.1. getCoordinates()
-controller -- DriverRepository : 1.2. findNearbyDrivers()
+controller -- driver : 1.2. findNearbyDrivers()
 controller -- driver : 2.1. isAvailable()
 controller -- ride : 2.2. create()
-controller -- pricing : 2.3. calculateCost()
-controller -- gateway : 3.1. processPayment()
+controller -- ride : 2.3. calculateCost()
+controller -- payment : 3.1. process()
 controller -- ride : 3.2. setStatus(PAID)
 controller -- ride : 4. assignDriver()
+controller -- vehicle : 4.1. assignVehicle()
 controller -- ride : 5. setStatus(IN_PROGRESS)
 controller -- ride : 6. setStatus(COMPLETED)
 controller -- rating : 7.1. create()
@@ -42,6 +43,7 @@ note right of controller
   Process payment
   Set status PAID
   Assign driver
+  Assign vehicle
   Set status IN_PROGRESS
   Set status COMPLETED
   Create rating

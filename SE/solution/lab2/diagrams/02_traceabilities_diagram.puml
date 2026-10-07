@@ -8,8 +8,8 @@ package "Use Cases" {
 }
 
 package "Use-Case Realizations" {
-  class "PurchaseRealization" as r_purchase <<realization>>
-  class "ExecuteRealization" as r_execute <<realization>>
+  class "PurchaseRealization" as r_purchase <<use-case realization>>
+  class "ExecuteRealization" as r_execute <<use-case realization>>
 }
 
 package "Design Model" {
