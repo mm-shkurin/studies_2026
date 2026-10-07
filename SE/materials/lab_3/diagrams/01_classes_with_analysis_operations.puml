@@ -1,0 +1,49 @@
+@startuml
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+title Операции классов анализа из сообщений Purchase Tickets
+class BookingUI <<boundary>> {
+  +listSessions(date)
+  +showSeatMap(sessionId)
+  +showPaymentResult(result)
+}
+class BookingController <<control>> {
+  +listSessions(date)
+  +reserveSeats(sessionId, seats)
+  +pay(orderId, operationId)
+  +getPaidTicket(orderId)
+}
+class CinemaCatalogBoundary <<boundary>> {
+  +getPublishedSessions(date)
+}
+class PaymentGatewayBoundary <<boundary>> {
+  +charge(amount, operationId)
+}
+class NotificationBoundary <<boundary>> {
+  +sendTicket(ticketId, operationId)
+}
+class MovieSession <<entity>> {
+  +currentSeatStates()
+  +lockSeats(seats, timeout)
+  +confirmSeatSold(seat, ticketId)
+  +releaseSeat(seat, ticketId)
+}
+class BookingOrder <<entity>> {
+  +getTotal()
+  +getExpiresAt()
+}
+class Ticket <<entity>> {
+  +markPaid(transactionId)
+  +cancel()
+  +getStatus()
+}
+BookingUI --> BookingController
+BookingController --> CinemaCatalogBoundary
+BookingController --> PaymentGatewayBoundary
+BookingController --> NotificationBoundary
+BookingController --> MovieSession
+BookingController --> BookingOrder
+BookingOrder --> Ticket
+@enduml

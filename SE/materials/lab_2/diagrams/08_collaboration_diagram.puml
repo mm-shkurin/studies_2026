@@ -1,0 +1,27 @@
+@startuml
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+title Коммуникация объектов — покупка билета
+object "viewer:Viewer" as Viewer
+object "ui:BookingUI" as UI
+object "ctrl:BookingController" as Ctrl
+object "session:MovieSession" as Session
+object "order:BookingOrder" as Order
+object "ticket:Ticket" as Ticket
+object "bank:PaymentGatewayBoundary" as Bank
+object "notify:NotificationBoundary" as Notify
+Viewer --> UI : 1: selectSessionAndSeats()
+UI --> Ctrl : 2: reserveSeats()
+Ctrl --> Session : 2.1: lockSeats()
+Ctrl --> Order : 2.2: create()
+Ctrl --> Ticket : 2.3: issueReserved()
+Viewer --> UI : 3: confirmPayment()
+UI --> Ctrl : 3.1: pay()
+Ctrl --> Bank : 3.2: charge()
+Ctrl --> Session : 3.3: confirmSeatSold()
+Ctrl --> Ticket : 3.4: markPaid()
+Ctrl --> Notify : 3.5: sendTicket()
+Ctrl --> UI : 4: result()
+UI --> Viewer : 4.1: showTicket()
+@enduml

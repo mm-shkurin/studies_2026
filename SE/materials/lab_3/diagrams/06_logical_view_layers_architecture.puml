@@ -1,0 +1,36 @@
+@startuml
+skinparam defaultFontName Arial
+skinparam classAttributeIconSize 0
+title Трёхслойная BCE-архитектура кинотеатра
+package "Application Layer" {
+ class "WebBookingBoundary" as UI <<boundary>>
+ class "CashierBoundary" as POS <<boundary>>
+ class "BookingWorkflow" as Workflow <<control>>
+}
+package "Business Services Layer" {
+ class "BookingController" as Booking <<control>>
+ class "ScheduleController" as Schedule <<control>>
+ class Ticket <<entity>>
+}
+package "Integration Boundary Layer" {
+ class "PersistenceBoundary" as DB <<boundary>>
+ class "PaymentGatewayBoundary" as Bank <<boundary>>
+ class "NotificationBoundary" as Notify <<boundary>>
+ class "LegacyMovieCatalogBoundary" as Catalog <<boundary>>
+}
+UI --> Workflow
+POS --> Workflow
+Workflow --> Booking
+Workflow --> Schedule
+Booking --> Ticket
+Booking --> DB
+Booking --> Bank
+Booking --> Notify
+Schedule --> Catalog
+Schedule --> DB
+note bottom
+ Boundary инкапсулируют ввод-вывод и внешние протоколы;
+ control координируют сценарии, entity хранят предметные правила.
+ Стрелки показывают зависимости использования классов.
+end note
+@enduml

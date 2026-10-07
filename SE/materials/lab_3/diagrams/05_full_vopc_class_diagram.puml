@@ -1,0 +1,44 @@
+@startuml
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+title Проектная VOPC-модель Purchase Tickets
+class BookingUI <<boundary>>
+class PaymentGatewayBoundary <<boundary>>
+class NotificationBoundary <<boundary>>
+class CinemaCatalogBoundary <<boundary>>
+class BookingController <<control>> {
+  +reserveSeats()
+  +finalizePayment()
+}
+class RefundController <<control>> {
+  +requestRefund()
+}
+class Viewer <<entity>>
+class Movie <<entity>>
+class CinemaHall <<entity>>
+class HallSeat <<entity>>
+class MovieSession <<entity>>
+class SeatAvailability <<association class>>
+class BookingOrder <<entity>>
+class Ticket <<entity>>
+class Payment <<entity>>
+BookingUI --> BookingController
+BookingController --> CinemaCatalogBoundary
+BookingController --> PaymentGatewayBoundary
+BookingController --> NotificationBoundary
+BookingController --> MovieSession
+BookingController --> BookingOrder
+RefundController --> Ticket
+Viewer "1" -- "0..*" BookingOrder
+Movie "1" -- "0..*" MovieSession
+CinemaHall "1" *-- "1..*" HallSeat
+CinemaHall "1" -- "0..*" MovieSession
+MovieSession "1" -- "1..*" SeatAvailability
+HallSeat "1" -- "0..*" SeatAvailability
+BookingOrder "1" *-- "1..*" Ticket
+BookingOrder "1" o-- "0..*" Payment
+Ticket "1" --> "1" MovieSession
+Ticket "1" --> "1" HallSeat
+@enduml

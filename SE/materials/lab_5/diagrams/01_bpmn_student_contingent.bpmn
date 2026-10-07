@@ -1,0 +1,379 @@
+<?xml version='1.0' encoding='utf-8'?>
+<b:definitions xmlns:b="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:d="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="defs_student_contingent" targetNamespace="urn:omgtu:software-engineering:variant-11" exporter="Skuka reproducible BPMN generator">
+  <b:message id="msg_c_start" name="Сообщение для c_start" />
+  <b:message id="msg_d_clarify" name="Сообщение для d_clarify" />
+  <b:message id="msg_k_start" name="Сообщение для k_start" />
+  <b:process id="p_dean" name="Деканат" isExecutable="false">
+    <b:startEvent id="d_start" name="Приказ издан">
+      <b:outgoing>d_f1</b:outgoing>
+    </b:startEvent>
+    <b:sendTask id="d_send" name="Передать приказ кафедре" messageRef="msg_k_start">
+      <b:incoming>d_f1</b:incoming>
+      <b:outgoing>d_f2</b:outgoing>
+    </b:sendTask>
+    <b:endEvent id="d_end" name="Приказ передан">
+      <b:incoming>d_f2</b:incoming>
+    </b:endEvent>
+    <b:startEvent id="d_clarify" name="Запрос уточнения">
+      <b:outgoing>d_f3</b:outgoing>
+      <b:messageEventDefinition id="msgdef_d_clarify" messageRef="msg_d_clarify" />
+    </b:startEvent>
+    <b:userTask id="d_fix" name="Уточнить реквизиты приказа">
+      <b:incoming>d_f3</b:incoming>
+      <b:outgoing>d_f4</b:outgoing>
+    </b:userTask>
+    <b:sendTask id="d_resend" name="Передать исправленный приказ" messageRef="msg_k_start">
+      <b:incoming>d_f4</b:incoming>
+      <b:outgoing>d_f5</b:outgoing>
+    </b:sendTask>
+    <b:endEvent id="d_fix_end" name="Уточнение отправлено">
+      <b:incoming>d_f5</b:incoming>
+    </b:endEvent>
+    <b:sequenceFlow id="d_f1" sourceRef="d_start" targetRef="d_send" />
+    <b:sequenceFlow id="d_f2" sourceRef="d_send" targetRef="d_end" />
+    <b:sequenceFlow id="d_f3" sourceRef="d_clarify" targetRef="d_fix" />
+    <b:sequenceFlow id="d_f4" sourceRef="d_fix" targetRef="d_resend" />
+    <b:sequenceFlow id="d_f5" sourceRef="d_resend" targetRef="d_fix_end" />
+  </b:process>
+  <b:process id="p_dept" name="Кафедра" isExecutable="false">
+    <b:startEvent id="k_start" name="Приказ получен">
+      <b:outgoing>k_f1</b:outgoing>
+      <b:messageEventDefinition id="msgdef_k_start" messageRef="msg_k_start" />
+    </b:startEvent>
+    <b:userTask id="k_check" name="Сверить приказ, студента и группу">
+      <b:incoming>k_f1</b:incoming>
+      <b:outgoing>k_f2</b:outgoing>
+    </b:userTask>
+    <b:exclusiveGateway id="k_valid" name="Данные полны?" gatewayDirection="Diverging" default="k_f7">
+      <b:incoming>k_f2</b:incoming>
+      <b:outgoing>k_f3</b:outgoing>
+      <b:outgoing>k_f7</b:outgoing>
+    </b:exclusiveGateway>
+    <b:serviceTask id="k_update" name="Обновить реестр и журнал изменений">
+      <b:incoming>k_f3</b:incoming>
+      <b:outgoing>k_f4</b:outgoing>
+    </b:serviceTask>
+    <b:userTask id="k_assign" name="Закрепить куратора за группой">
+      <b:incoming>k_f4</b:incoming>
+      <b:outgoing>k_f5</b:outgoing>
+    </b:userTask>
+    <b:sendTask id="k_send" name="Передать актуальный список" messageRef="msg_c_start">
+      <b:incoming>k_f5</b:incoming>
+      <b:outgoing>k_f6</b:outgoing>
+    </b:sendTask>
+    <b:endEvent id="k_end" name="Контингент обновлён">
+      <b:incoming>k_f6</b:incoming>
+    </b:endEvent>
+    <b:sendTask id="k_clarify" name="Запросить уточнение" messageRef="msg_d_clarify">
+      <b:incoming>k_f7</b:incoming>
+      <b:outgoing>k_f8</b:outgoing>
+    </b:sendTask>
+    <b:endEvent id="k_hold" name="Изменение отложено">
+      <b:incoming>k_f8</b:incoming>
+    </b:endEvent>
+    <b:sequenceFlow id="k_f1" sourceRef="k_start" targetRef="k_check" />
+    <b:sequenceFlow id="k_f2" sourceRef="k_check" targetRef="k_valid" />
+    <b:sequenceFlow id="k_f3" sourceRef="k_valid" targetRef="k_update" name="Да">
+      <b:conditionExpression xsi:type="b:tFormalExpression">k_valid_condition = true</b:conditionExpression>
+    </b:sequenceFlow>
+    <b:sequenceFlow id="k_f4" sourceRef="k_update" targetRef="k_assign" />
+    <b:sequenceFlow id="k_f5" sourceRef="k_assign" targetRef="k_send" />
+    <b:sequenceFlow id="k_f6" sourceRef="k_send" targetRef="k_end" />
+    <b:sequenceFlow id="k_f7" sourceRef="k_valid" targetRef="k_clarify" name="Нет" />
+    <b:sequenceFlow id="k_f8" sourceRef="k_clarify" targetRef="k_hold" />
+  </b:process>
+  <b:process id="p_curator" name="Куратор" isExecutable="false">
+    <b:startEvent id="c_start" name="Список получен">
+      <b:outgoing>c_f1</b:outgoing>
+      <b:messageEventDefinition id="msgdef_c_start" messageRef="msg_c_start" />
+    </b:startEvent>
+    <b:userTask id="c_record" name="Зафиксировать движение контингента">
+      <b:incoming>c_f1</b:incoming>
+      <b:outgoing>c_f2</b:outgoing>
+    </b:userTask>
+    <b:exclusiveGateway id="c_need" name="Нужен контакт?" gatewayDirection="Diverging" default="c_f5">
+      <b:incoming>c_f2</b:incoming>
+      <b:outgoing>c_f3</b:outgoing>
+      <b:outgoing>c_f5</b:outgoing>
+    </b:exclusiveGateway>
+    <b:userTask id="c_contact" name="Связаться со студентом и родителями">
+      <b:incoming>c_f3</b:incoming>
+      <b:outgoing>c_f4</b:outgoing>
+    </b:userTask>
+    <b:endEvent id="c_end" name="Сведения актуальны">
+      <b:incoming>c_f4</b:incoming>
+      <b:incoming>c_f5</b:incoming>
+    </b:endEvent>
+    <b:sequenceFlow id="c_f1" sourceRef="c_start" targetRef="c_record" />
+    <b:sequenceFlow id="c_f2" sourceRef="c_record" targetRef="c_need" />
+    <b:sequenceFlow id="c_f3" sourceRef="c_need" targetRef="c_contact" name="Да">
+      <b:conditionExpression xsi:type="b:tFormalExpression">c_need_condition = true</b:conditionExpression>
+    </b:sequenceFlow>
+    <b:sequenceFlow id="c_f4" sourceRef="c_contact" targetRef="c_end" />
+    <b:sequenceFlow id="c_f5" sourceRef="c_need" targetRef="c_end" name="Нет" />
+  </b:process>
+  <b:collaboration id="collab_student_contingent" name="Учёт контингента и кураторское сопровождение">
+    <b:participant id="participant_dean" name="Деканат" processRef="p_dean" />
+    <b:participant id="participant_dept" name="Кафедра" processRef="p_dept" />
+    <b:participant id="participant_curator" name="Куратор" processRef="p_curator" />
+    <b:messageFlow id="m_order" name="Приказ" sourceRef="d_send" targetRef="k_start" messageRef="msg_k_start" />
+    <b:messageFlow id="m_clarify" name="Запрос уточнения" sourceRef="k_clarify" targetRef="d_clarify" messageRef="msg_d_clarify" />
+    <b:messageFlow id="m_corrected" name="Исправленный приказ" sourceRef="d_resend" targetRef="k_start" messageRef="msg_k_start" />
+    <b:messageFlow id="m_group" name="Список группы" sourceRef="k_send" targetRef="c_start" messageRef="msg_c_start" />
+  </b:collaboration>
+  <d:BPMNDiagram id="diagram_student_contingent">
+    <d:BPMNPlane id="plane_student_contingent" bpmnElement="collab_student_contingent">
+      <d:BPMNShape id="shape_participant_dean" bpmnElement="participant_dean" isHorizontal="true">
+        <dc:Bounds x="40" y="100" width="2010" height="300" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_participant_dept" bpmnElement="participant_dept" isHorizontal="true">
+        <dc:Bounds x="40" y="460" width="2010" height="300" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_participant_curator" bpmnElement="participant_curator" isHorizontal="true">
+        <dc:Bounds x="40" y="820" width="2010" height="300" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_d_start" bpmnElement="d_start" isMarkerVisible="true">
+        <dc:Bounds x="240" y="170" width="40" height="40" />
+        <d:BPMNLabel>
+          <dc:Bounds x="200" y="218" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_d_send" bpmnElement="d_send" isMarkerVisible="true">
+        <dc:Bounds x="350" y="155" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_d_end" bpmnElement="d_end" isMarkerVisible="true">
+        <dc:Bounds x="580" y="170" width="40" height="40" />
+        <d:BPMNLabel>
+          <dc:Bounds x="540" y="218" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_d_clarify" bpmnElement="d_clarify" isMarkerVisible="true">
+        <dc:Bounds x="1000" y="170" width="40" height="40" />
+        <d:BPMNLabel>
+          <dc:Bounds x="960" y="218" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_d_fix" bpmnElement="d_fix" isMarkerVisible="true">
+        <dc:Bounds x="1110" y="155" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_d_resend" bpmnElement="d_resend" isMarkerVisible="true">
+        <dc:Bounds x="1340" y="155" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_d_fix_end" bpmnElement="d_fix_end" isMarkerVisible="true">
+        <dc:Bounds x="1570" y="170" width="40" height="40" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1530" y="218" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_k_start" bpmnElement="k_start" isMarkerVisible="true">
+        <dc:Bounds x="350" y="530" width="40" height="40" />
+        <d:BPMNLabel>
+          <dc:Bounds x="310" y="578" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_k_check" bpmnElement="k_check" isMarkerVisible="true">
+        <dc:Bounds x="460" y="515" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_k_valid" bpmnElement="k_valid" isMarkerVisible="true">
+        <dc:Bounds x="690" y="527" width="50" height="50" />
+        <d:BPMNLabel>
+          <dc:Bounds x="650" y="475" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_k_update" bpmnElement="k_update" isMarkerVisible="true">
+        <dc:Bounds x="800" y="495" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_k_assign" bpmnElement="k_assign" isMarkerVisible="true">
+        <dc:Bounds x="1030" y="495" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_k_send" bpmnElement="k_send" isMarkerVisible="true">
+        <dc:Bounds x="1260" y="495" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_k_end" bpmnElement="k_end" isMarkerVisible="true">
+        <dc:Bounds x="1490" y="530" width="40" height="40" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1450" y="578" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_k_clarify" bpmnElement="k_clarify" isMarkerVisible="true">
+        <dc:Bounds x="800" y="625" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_k_hold" bpmnElement="k_hold" isMarkerVisible="true">
+        <dc:Bounds x="1030" y="640" width="40" height="40" />
+        <d:BPMNLabel>
+          <dc:Bounds x="990" y="688" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_c_start" bpmnElement="c_start" isMarkerVisible="true">
+        <dc:Bounds x="1260" y="890" width="40" height="40" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1220" y="938" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_c_record" bpmnElement="c_record" isMarkerVisible="true">
+        <dc:Bounds x="1370" y="875" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_c_need" bpmnElement="c_need" isMarkerVisible="true">
+        <dc:Bounds x="1600" y="887" width="50" height="50" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1560" y="835" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_c_contact" bpmnElement="c_contact" isMarkerVisible="true">
+        <dc:Bounds x="1720" y="855" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_c_end" bpmnElement="c_end" isMarkerVisible="true">
+        <dc:Bounds x="1950" y="890" width="40" height="40" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1910" y="938" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNEdge id="edge_d_f1" bpmnElement="d_f1">
+        <di:waypoint x="280" y="190" />
+        <di:waypoint x="315" y="190" />
+        <di:waypoint x="315" y="192" />
+        <di:waypoint x="350" y="192" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_d_f2" bpmnElement="d_f2">
+        <di:waypoint x="540" y="192" />
+        <di:waypoint x="560" y="192" />
+        <di:waypoint x="560" y="190" />
+        <di:waypoint x="580" y="190" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_d_f3" bpmnElement="d_f3">
+        <di:waypoint x="1040" y="190" />
+        <di:waypoint x="1075" y="190" />
+        <di:waypoint x="1075" y="192" />
+        <di:waypoint x="1110" y="192" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_d_f4" bpmnElement="d_f4">
+        <di:waypoint x="1300" y="192" />
+        <di:waypoint x="1340" y="192" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_d_f5" bpmnElement="d_f5">
+        <di:waypoint x="1530" y="192" />
+        <di:waypoint x="1550" y="192" />
+        <di:waypoint x="1550" y="190" />
+        <di:waypoint x="1570" y="190" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_k_f1" bpmnElement="k_f1">
+        <di:waypoint x="390" y="550" />
+        <di:waypoint x="425" y="550" />
+        <di:waypoint x="425" y="552" />
+        <di:waypoint x="460" y="552" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_k_f2" bpmnElement="k_f2">
+        <di:waypoint x="650" y="552" />
+        <di:waypoint x="690" y="552" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_k_f3" bpmnElement="k_f3">
+        <di:waypoint x="740" y="552" />
+        <di:waypoint x="770" y="552" />
+        <di:waypoint x="770" y="532" />
+        <di:waypoint x="800" y="532" />
+        <d:BPMNLabel>
+          <dc:Bounds x="735" y="526" width="40" height="22" />
+        </d:BPMNLabel>
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_k_f4" bpmnElement="k_f4">
+        <di:waypoint x="990" y="532" />
+        <di:waypoint x="1030" y="532" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_k_f5" bpmnElement="k_f5">
+        <di:waypoint x="1220" y="532" />
+        <di:waypoint x="1260" y="532" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_k_f6" bpmnElement="k_f6">
+        <di:waypoint x="1450" y="532" />
+        <di:waypoint x="1470" y="532" />
+        <di:waypoint x="1470" y="550" />
+        <di:waypoint x="1490" y="550" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_k_f7" bpmnElement="k_f7">
+        <di:waypoint x="715" y="577" />
+        <di:waypoint x="715" y="662" />
+        <di:waypoint x="800" y="662" />
+        <d:BPMNLabel>
+          <dc:Bounds x="723" y="608" width="40" height="22" />
+        </d:BPMNLabel>
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_k_f8" bpmnElement="k_f8">
+        <di:waypoint x="990" y="662" />
+        <di:waypoint x="1010" y="662" />
+        <di:waypoint x="1010" y="660" />
+        <di:waypoint x="1030" y="660" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_c_f1" bpmnElement="c_f1">
+        <di:waypoint x="1300" y="910" />
+        <di:waypoint x="1335" y="910" />
+        <di:waypoint x="1335" y="912" />
+        <di:waypoint x="1370" y="912" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_c_f2" bpmnElement="c_f2">
+        <di:waypoint x="1560" y="912" />
+        <di:waypoint x="1600" y="912" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_c_f3" bpmnElement="c_f3">
+        <di:waypoint x="1650" y="912" />
+        <di:waypoint x="1685" y="912" />
+        <di:waypoint x="1685" y="892" />
+        <di:waypoint x="1720" y="892" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1647" y="886" width="40" height="22" />
+        </d:BPMNLabel>
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_c_f4" bpmnElement="c_f4">
+        <di:waypoint x="1910" y="892" />
+        <di:waypoint x="1930" y="892" />
+        <di:waypoint x="1930" y="910" />
+        <di:waypoint x="1950" y="910" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_c_f5" bpmnElement="c_f5">
+        <di:waypoint x="1625" y="937" />
+        <di:waypoint x="1625" y="1010" />
+        <di:waypoint x="1970" y="1010" />
+        <di:waypoint x="1970" y="930" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1777" y="984" width="40" height="22" />
+        </d:BPMNLabel>
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_m_order" bpmnElement="m_order">
+        <di:waypoint x="445" y="229" />
+        <di:waypoint x="445" y="360" />
+        <di:waypoint x="370" y="360" />
+        <di:waypoint x="370" y="530" />
+        <d:BPMNLabel>
+          <dc:Bounds x="362" y="336" width="90" height="20" />
+        </d:BPMNLabel>
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_m_clarify" bpmnElement="m_clarify">
+        <di:waypoint x="800" y="662" />
+        <di:waypoint x="770" y="662" />
+        <di:waypoint x="770" y="420" />
+        <di:waypoint x="1020" y="420" />
+        <di:waypoint x="1020" y="210" />
+        <d:BPMNLabel>
+          <dc:Bounds x="815" y="396" width="160" height="20" />
+        </d:BPMNLabel>
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_m_corrected" bpmnElement="m_corrected">
+        <di:waypoint x="1435" y="229" />
+        <di:waypoint x="1435" y="395" />
+        <di:waypoint x="370" y="395" />
+        <di:waypoint x="370" y="530" />
+        <d:BPMNLabel>
+          <dc:Bounds x="809" y="371" width="187" height="20" />
+        </d:BPMNLabel>
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_m_group" bpmnElement="m_group">
+        <di:waypoint x="1355" y="569" />
+        <di:waypoint x="1355" y="785" />
+        <di:waypoint x="1280" y="785" />
+        <di:waypoint x="1280" y="890" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1251" y="761" width="133" height="20" />
+        </d:BPMNLabel>
+      </d:BPMNEdge>
+    </d:BPMNPlane>
+  </d:BPMNDiagram>
+</b:definitions>

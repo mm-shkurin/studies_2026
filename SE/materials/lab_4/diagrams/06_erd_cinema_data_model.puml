@@ -1,0 +1,78 @@
+@startuml
+title ЛР 4 – реляционная модель кинотеатра (дополнение)
+hide circle
+skinparam defaultFontName Arial
+entity Movie {
+  * movie_id : UUID <<PK>>
+  --
+  title : TEXT
+  duration_min : INTEGER
+}
+entity CinemaHall {
+  * hall_id : UUID <<PK>>
+  --
+  name : TEXT
+}
+entity HallSeat {
+  * seat_id : UUID <<PK>>
+  --
+  hall_id : UUID <<FK>>
+  row_no : INTEGER
+  seat_no : INTEGER
+}
+entity MovieSession {
+  * session_id : UUID <<PK>>
+  --
+  movie_id : UUID <<FK>>
+  hall_id : UUID <<FK>>
+  starts_at : TIMESTAMP
+}
+entity Viewer {
+  * viewer_id : UUID <<PK>>
+  --
+  email : TEXT
+}
+entity BookingOrder {
+  * order_id : UUID <<PK>>
+  --
+  viewer_id : UUID <<FK>>
+  status : TEXT
+}
+entity Ticket {
+  * ticket_id : UUID <<PK>>
+  --
+  order_id : UUID <<FK>>
+  session_id : UUID <<FK>>
+  seat_id : UUID <<FK>>
+  hall_id : UUID
+  status : TEXT
+  price_kopecks : BIGINT
+}
+entity Payment {
+  * payment_id : UUID <<PK>>
+  --
+  order_id : UUID <<FK>>
+  provider_key : TEXT <<UNIQUE>>
+  status : TEXT
+}
+CinemaHall ||--o{ HallSeat
+CinemaHall ||--o{ MovieSession
+Movie ||--o{ MovieSession
+Viewer ||--o{ BookingOrder
+BookingOrder ||--o{ Ticket
+BookingOrder ||--o{ Payment
+MovieSession ||--o{ Ticket
+HallSeat ||--o{ Ticket
+note bottom of Ticket
+  Активные статусы: RESERVED_LOCK, PAID_CONFIRMED, CHECKED_IN.
+  Частичный UNIQUE(session_id, seat_id) для активных билетов.
+  Составные FK(session_id, hall_id) и FK(seat_id, hall_id)
+  ссылаются на UNIQUE-пары MovieSession и HallSeat.
+  Это запрещает место из другого зала; CHECK(price_kopecks >= 0).
+  Удержания фиксируются атомарно; один кеш не гарантирует продажу.
+end note
+note bottom of HallSeat
+  UNIQUE(hall_id, row_no, seat_no); CHECK(row_no > 0, seat_no > 0).
+  Удаление сущностей с билетами ограничивается FK.
+end note
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+skinparam defaultFontName Arial
+skinparam componentStyle rectangle
+title Сетевая топология кинотеатра: проектные протоколы
+node "Устройство зрителя" as Web <<device>>
+node "Кассовый терминал" as POS <<device>>
+node "Сервер приложения\nBooking / Schedule\nCinemaCatalogBoundary" as App <<device>>
+node "PostgreSQL\nCinema OLTP" as DB <<device>>
+node "Redis\nSeatHold TTL" as Redis <<device>>
+node "Внешний PostgreSQL\nКаталог фильмов: read-only" as Catalog <<device>>
+node "Платёжный провайдер" as Bank <<external>>
+node "Провайдер уведомлений" as Notify <<external>>
+Web -- App : HTTP/1.1 / TLS 1.3\nTCP 443 / IPv4\nIEEE 802.11 → 802.3
+POS -- App : HTTP/1.1 / TLS 1.3\nTCP 443 / IPv4 / IEEE 802.3
+App -- DB : PostgreSQL wire v3 / TLS 1.3\nTCP 5432 / IPv4 / IEEE 802.3
+App -- Redis : RESP2 / TLS 1.3\nTCP 6380 / IPv4 / IEEE 802.3
+App -- Catalog : PostgreSQL wire v3 / TLS 1.3\nTCP 5432 / IPv4 / IEEE 802.3
+App -- Bank : HTTP/1.1 / TLS 1.3\nTCP 443 / IPv4 / Ethernet
+App -- Notify : HTTP/1.1 / TLS 1.3\nTCP 443 / IPv4 / Ethernet
+note bottom of App
+ Порты — проектные порты назначения.
+ Публичные каналы проходят через маршрутизаторы оператора;
+ Ethernet указан для серверного сегмента, Wi-Fi — для клиента.
+ Доступ к каталогу: отдельная роль БД без прав записи.
+end note
+@enduml

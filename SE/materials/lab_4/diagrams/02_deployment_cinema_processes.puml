@@ -1,0 +1,49 @@
+@startuml
+skinparam defaultFontName Arial
+skinparam componentStyle rectangle
+title ЛР 4 – процессы, артефакты и сетевые каналы
+node "Клиент" <<device>> {
+ node "Браузер" <<executionEnvironment>> {
+ artifact "cinema-web" as web
+ }
+}
+node "Сервер приложений" <<device>> {
+ node "Процесс Cinema API" <<executionEnvironment>> {
+ artifact "Booking / Schedule" as api
+ artifact "PaymentGatewayBoundary" as payment
+ }
+ node "Процесс Notification Worker" <<executionEnvironment>> {
+ artifact "NotificationBoundary" as worker
+ }
+}
+node "Сервер данных" <<device>> {
+ node "PostgreSQL" <<executionEnvironment>> {
+ artifact "Схема Cinema DB" as db
+ }
+}
+node "Сервер удержаний" <<device>> {
+ node "Redis" <<executionEnvironment>> {
+ artifact "SeatHold TTL" as holds
+ }
+}
+node "Брокер" <<device>> {
+ node "RabbitMQ" <<executionEnvironment>> {
+ artifact "Очередь TicketPaid" as queue
+ }
+}
+node "Платёжный провайдер" as gateway <<external>>
+node "Провайдер уведомлений" as provider <<external>>
+web ..> api : HTTP/1.1 / TLS 1.3 / TCP 443 / IPv4
+api ..> db : PostgreSQL wire v3 / TLS 1.3 / TCP 5432 / IPv4
+api ..> holds : RESP2 / TLS 1.3 / TCP 6380 / IPv4
+api ..> payment : вызов в одном процессе (без сети)
+payment ..> gateway : HTTP/1.1 / TLS 1.3 / TCP 443 / IPv4
+api ..> queue : AMQP 0-9-1 / TLS 1.3 / TCP 5671 / IPv4
+worker ..> queue : AMQP 0-9-1 / TLS 1.3 / TCP 5671 / IPv4
+worker ..> provider : HTTP/1.1 / TLS 1.3 / TCP 443 / IPv4
+note bottom
+ Проектное размещение артефактов и процессов.
+ Канальный уровень серверных соединений — IEEE 802.3;
+ клиентского доступа — IEEE 802.11 / 802.3.
+end note
+@enduml

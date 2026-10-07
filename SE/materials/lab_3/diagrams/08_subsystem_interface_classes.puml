@@ -1,0 +1,35 @@
+@startuml
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+title Интерфейс и реализация подсистемы каталога
+interface ICinemaCatalog {
+  +getMovies(filter: MovieFilter): List<Movie>
+  +getMovie(id: UUID): Movie
+  +initialize(): void
+}
+class CinemaCatalogBoundary <<boundary>> {
+  -source: LegacyMovieCatalogBoundary
+  +getMovies(filter: MovieFilter): List<Movie>
+  +getMovie(id: UUID): Movie
+  +initialize(): void
+}
+class LegacyMovieCatalogBoundary <<boundary>> {
+  +checkReadOnlyConnection(): ConnectionStatus
+  +queryMovies(filter: MovieFilter): List<MovieRow>
+  +queryMovie(id: UUID): MovieRow
+}
+class MovieMapper <<control>> {
+  +fromRow(row: MovieRow): Movie
+}
+class Movie <<entity>>
+ICinemaCatalog <|.. CinemaCatalogBoundary
+CinemaCatalogBoundary --> LegacyMovieCatalogBoundary : read only
+CinemaCatalogBoundary --> MovieMapper
+MovieMapper --> Movie
+note bottom of ICinemaCatalog
+  Изменение каталога не входит в контракт;
+  расписание киносеансов хранится отдельно.
+end note
+@enduml

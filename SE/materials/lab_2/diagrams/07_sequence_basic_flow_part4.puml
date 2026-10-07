@@ -1,0 +1,30 @@
+@startuml
+title Фаза 4 — доставка билета и отказоустойчивость
+autonumber
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+actor "Зритель" as Viewer
+boundary ":BookingUI" as UI
+control ":BookingController" as Ctrl
+entity ":Ticket" as Ticket
+boundary ":NotificationBoundary" as Notify
+Viewer -> UI : открыть оплаченный заказ
+UI -> Ctrl : getPaidTicket(orderId)
+Ctrl -> Ticket : getStatus(), getQrPayload()
+alt билет PAID_CONFIRMED
+  Ticket --> Ctrl : QR и данные сеанса
+  Ctrl -> Notify : sendTicket(ticketId, operationId)
+  alt доставка принята
+    Notify --> Ctrl : accepted
+    Ctrl --> UI : билет и статус доставки
+  else провайдер недоступен
+    Notify --> Ctrl : временная ошибка
+    Ctrl --> UI : билет доступен в кабинете; доставка ожидает повтора
+  end
+else билет не оплачен
+  Ticket --> Ctrl : RESERVED_LOCK / CANCELLED_EXPIRED
+  Ctrl --> UI : билет не выдаётся
+end
+UI --> Viewer : показать итог
+@enduml

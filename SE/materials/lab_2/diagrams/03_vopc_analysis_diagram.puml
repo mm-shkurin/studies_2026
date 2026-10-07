@@ -1,0 +1,36 @@
+@startuml
+allowmixing
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+title VOPC — Purchase Tickets
+actor "Зритель" as Viewer
+class "BookingUI" as UI <<boundary>> {
+  +showSessions()
+  +showSeatMap()
+  +showPaymentResult()
+}
+class "PaymentGatewayBoundary" as Bank <<boundary>>
+class "NotificationBoundary" as Notify <<boundary>>
+class "BookingController" as Ctrl <<control>> {
+  +reserveSeats()
+  +finalizePayment()
+}
+class "MovieSession" as Session <<entity>>
+class "SeatHold" as Hold <<entity>>
+class "BookingOrder" as Order <<entity>>
+class "Ticket" as Ticket <<entity>>
+Viewer --> UI
+UI --> Ctrl
+Ctrl --> Session
+Ctrl --> Hold
+Ctrl --> Order
+Order --> Ticket
+Ctrl --> Bank
+Ctrl --> Notify
+note bottom of Ctrl
+  Контроллер координирует сценарий;
+  запись оплаченного билета возможна
+  только после подтверждения платежа.
+end note
+@enduml

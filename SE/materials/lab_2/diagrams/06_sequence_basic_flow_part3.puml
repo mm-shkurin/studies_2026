@@ -1,0 +1,32 @@
+@startuml
+title Фаза 3 — подтверждение оплаты
+autonumber
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+actor "Зритель" as Viewer
+boundary ":BookingUI" as UI
+control ":BookingController" as Ctrl
+boundary ":PaymentGatewayBoundary" as Bank
+entity ":MovieSession" as Session
+entity ":Ticket" as Ticket
+Viewer -> UI : подтвердить оплату
+UI -> Ctrl : pay(orderId, operationId)
+Ctrl -> Bank : charge(amount, operationId)
+alt подтверждено до expiresAt
+  Bank --> Ctrl : transactionId
+  Ctrl -> Session : confirmSeatSold(seat, ticketId)
+  Session --> Ctrl : true
+  Ctrl -> Ticket : markPaid(transactionId)
+  Ticket --> Ctrl : PAID_CONFIRMED
+  Ctrl --> UI : заказ оплачен
+else банк отказал
+  Bank --> Ctrl : отказ
+  Ctrl --> UI : повторить до expiresAt
+else бронь истекла
+  Ctrl -> Ticket : cancel()
+  Ctrl -> Session : releaseSeat(seat, ticketId)
+  Ctrl --> UI : требуется новый выбор мест
+end
+UI --> Viewer : показать результат
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+skinparam defaultFontName Arial
+title ЛР 4 – жизненный цикл билета
+[*] --> RESERVED_LOCK : reserve [место свободно] / holdSeat
+RESERVED_LOCK : entry / установить срок удержания
+RESERVED_LOCK --> PAID_CONFIRMED : paymentConfirmed [holdValid && transactionIdValid] / savePayment
+RESERVED_LOCK --> CANCELLED_EXPIRED : cancel / releaseSeat
+RESERVED_LOCK --> CANCELLED_EXPIRED : holdExpired / releaseSeat
+PAID_CONFIRMED --> CHECKED_IN : scan [sessionValid && notUsed] / recordAdmission
+PAID_CONFIRMED --> REFUNDED : refund [beforeDeadline && notUsed] / saveRefund, releaseSeat
+CHECKED_IN --> [*] : sessionFinished
+REFUNDED --> [*]
+CANCELLED_EXPIRED --> [*]
+note bottom of PAID_CONFIRMED
+ Повторное подтверждение с тем же ID оплаты идемпотентно:
+ состояние и финансовая операция не дублируются.
+ При опоздавшей оплате после TTL билет не возобновляется:
+ платёж передаётся в отдельный сценарий возврата.
+end note
+@enduml

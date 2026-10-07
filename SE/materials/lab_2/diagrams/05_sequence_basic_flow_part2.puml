@@ -1,0 +1,30 @@
+@startuml
+title Фаза 2 — атомарное удержание мест
+autonumber
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+actor "Зритель" as Viewer
+boundary ":BookingUI" as UI
+control ":BookingController" as Ctrl
+entity ":MovieSession" as Session
+entity ":BookingOrder" as Order
+entity ":Ticket" as Ticket
+Viewer -> UI : выбрать места
+UI -> Ctrl : reserveSeats(sessionId, seats)
+Ctrl -> Session : lockSeats(seats, 900 s)
+alt все места свободны
+  Session --> Ctrl : true
+  Ctrl -> Order : <<create>> expiresAt
+  loop для каждого места
+    Ctrl -> Ticket : <<create>> RESERVED_LOCK
+    Ctrl -> Session : claimSeat(seat, ticketId)
+  end
+  Ctrl --> UI : orderId, сумма, expiresAt
+  UI --> Viewer : форма оплаты
+else конфликт
+  Session --> Ctrl : false, без частичной блокировки
+  Ctrl --> UI : конфликт мест
+  UI --> Viewer : обновлённая карта
+end
+@enduml

@@ -1,0 +1,42 @@
+@startuml
+skinparam defaultFontName Arial
+skinparam componentStyle uml2
+title ЛР 4 – компонентная архитектура кинотеатра
+component "Web / POS" as UI
+component "Booking Service" as Booking
+component "Schedule Service" as Schedule
+component "SeatHold Service" as Hold
+component "PaymentGatewayBoundary" as Payment
+component "Notification Worker" as Notify
+component "RabbitMQ" as Queue
+component "PersistenceBoundary" as Persistence
+component "CinemaCatalogBoundary" as Catalog
+interface IBooking
+interface ISchedule
+interface ISeatHold
+interface IPayment
+interface INotificationQueue
+interface IPersistence
+interface ICinemaCatalog
+Queue - INotificationQueue
+Booking - IBooking
+UI ..> IBooking : uses
+Schedule - ISchedule
+UI ..> ISchedule : uses
+Hold - ISeatHold
+Booking ..> ISeatHold : uses
+Payment - IPayment
+Booking ..> IPayment : uses
+Notify ..> INotificationQueue : consumes
+Booking ..> INotificationQueue : publishes
+Persistence - IPersistence
+Booking ..> IPersistence : uses
+Schedule ..> IPersistence : uses
+Catalog - ICinemaCatalog
+Schedule ..> ICinemaCatalog : uses
+note bottom of Booking
+ Компоненты предоставляют и используют явные интерфейсы.
+ Размещение и протоколы заданы отдельными deployment-схемами.
+ Изменение провайдера ограничено граничным компонентом.
+end note
+@enduml

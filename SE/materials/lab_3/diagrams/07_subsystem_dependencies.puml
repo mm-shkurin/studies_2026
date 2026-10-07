@@ -1,0 +1,25 @@
+@startuml
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+title Зависимости подсистем
+package "Cinema Booking System" {
+  [Booking Subsystem] as Booking
+  [Schedule Subsystem] as Schedule
+  [Ticket Subsystem] as Ticket
+  [Payment Integration] as Payment
+  [Notification Integration] as Notify
+  [Cinema Catalog Proxy] as Catalog
+}
+cloud "Legacy Movie Catalog\n(read-only)" as Legacy
+database "Cinema OLTP" as DB
+Booking --> Schedule : getSession, seat map
+Booking --> Ticket : issue, pay, cancel
+Booking --> Payment : charge/refund
+Booking --> Notify : deliver
+Schedule --> Catalog : getMovies
+Catalog --> Legacy : read only
+Booking --> DB : transactional writes
+Schedule --> DB : session writes
+Ticket --> DB : ticket state
+@enduml

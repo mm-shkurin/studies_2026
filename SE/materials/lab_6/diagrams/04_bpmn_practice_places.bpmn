@@ -1,0 +1,323 @@
+<?xml version='1.0' encoding='utf-8'?>
+<b:definitions xmlns:b="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:d="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="defs_practice_places" targetNamespace="urn:omgtu:software-engineering:variant-11" exporter="Skuka reproducible BPMN generator">
+  <b:message id="msg_b_directions" name="Сообщение для b_directions" />
+  <b:message id="msg_b_start" name="Сообщение для b_start" />
+  <b:message id="msg_reply" name="Сообщение для reply" />
+  <b:process id="p_dept" name="Кафедра" isExecutable="false">
+    <b:startEvent id="start" name="Потребность в местах">
+      <b:outgoing>f1</b:outgoing>
+    </b:startEvent>
+    <b:exclusiveGateway id="merge" name="" gatewayDirection="Converging">
+      <b:incoming>f1</b:incoming>
+      <b:incoming>f9</b:incoming>
+      <b:outgoing>f2</b:outgoing>
+    </b:exclusiveGateway>
+    <b:userTask id="select" name="Сопоставить студентов и подходящую базу">
+      <b:incoming>f2</b:incoming>
+      <b:outgoing>f3</b:outgoing>
+    </b:userTask>
+    <b:sendTask id="request" name="Направить заявку на места" messageRef="msg_b_start">
+      <b:incoming>f3</b:incoming>
+      <b:outgoing>f4</b:outgoing>
+    </b:sendTask>
+    <b:receiveTask id="reply" name="Получить ответ о местах" messageRef="msg_reply">
+      <b:incoming>f4</b:incoming>
+      <b:outgoing>f5</b:outgoing>
+    </b:receiveTask>
+    <b:exclusiveGateway id="places" name="Места выделены?" gatewayDirection="Diverging" default="f8">
+      <b:incoming>f5</b:incoming>
+      <b:outgoing>f6</b:outgoing>
+      <b:outgoing>f8</b:outgoing>
+    </b:exclusiveGateway>
+    <b:sendTask id="directions" name="Закрепить места и передать направления" messageRef="msg_b_directions">
+      <b:incoming>f6</b:incoming>
+      <b:outgoing>f7</b:outgoing>
+    </b:sendTask>
+    <b:endEvent id="end" name="Места предоставлены">
+      <b:incoming>f7</b:incoming>
+    </b:endEvent>
+    <b:userTask id="other" name="Выбрать другую базу практики">
+      <b:incoming>f8</b:incoming>
+      <b:outgoing>f9</b:outgoing>
+    </b:userTask>
+    <b:sequenceFlow id="f1" sourceRef="start" targetRef="merge" />
+    <b:sequenceFlow id="f2" sourceRef="merge" targetRef="select" />
+    <b:sequenceFlow id="f3" sourceRef="select" targetRef="request" />
+    <b:sequenceFlow id="f4" sourceRef="request" targetRef="reply" />
+    <b:sequenceFlow id="f5" sourceRef="reply" targetRef="places" />
+    <b:sequenceFlow id="f6" sourceRef="places" targetRef="directions" name="Да">
+      <b:conditionExpression xsi:type="b:tFormalExpression">places_condition = true</b:conditionExpression>
+    </b:sequenceFlow>
+    <b:sequenceFlow id="f7" sourceRef="directions" targetRef="end" />
+    <b:sequenceFlow id="f8" sourceRef="places" targetRef="other" name="Нет" />
+    <b:sequenceFlow id="f9" sourceRef="other" targetRef="merge" />
+  </b:process>
+  <b:process id="p_partner" name="База практики" isExecutable="false">
+    <b:startEvent id="b_start" name="Заявка получена">
+      <b:outgoing>b_f1</b:outgoing>
+      <b:messageEventDefinition id="msgdef_b_start" messageRef="msg_b_start" />
+    </b:startEvent>
+    <b:userTask id="b_check" name="Проверить вместимость и профиль мест">
+      <b:incoming>b_f1</b:incoming>
+      <b:outgoing>b_f2</b:outgoing>
+    </b:userTask>
+    <b:exclusiveGateway id="b_ok" name="Есть места?" gatewayDirection="Diverging" default="b_f6">
+      <b:incoming>b_f2</b:incoming>
+      <b:outgoing>b_f3</b:outgoing>
+      <b:outgoing>b_f6</b:outgoing>
+    </b:exclusiveGateway>
+    <b:sendTask id="b_yes" name="Подтвердить предоставление мест" messageRef="msg_reply">
+      <b:incoming>b_f3</b:incoming>
+      <b:outgoing>b_f4</b:outgoing>
+    </b:sendTask>
+    <b:receiveTask id="b_directions" name="Получить направления студентов" messageRef="msg_b_directions">
+      <b:incoming>b_f4</b:incoming>
+      <b:outgoing>b_f5</b:outgoing>
+    </b:receiveTask>
+    <b:endEvent id="b_end" name="Места закреплены">
+      <b:incoming>b_f5</b:incoming>
+    </b:endEvent>
+    <b:sendTask id="b_no" name="Передать отказ" messageRef="msg_reply">
+      <b:incoming>b_f6</b:incoming>
+      <b:outgoing>b_f7</b:outgoing>
+    </b:sendTask>
+    <b:endEvent id="b_no_end" name="Заявка отклонена">
+      <b:incoming>b_f7</b:incoming>
+    </b:endEvent>
+    <b:sequenceFlow id="b_f1" sourceRef="b_start" targetRef="b_check" />
+    <b:sequenceFlow id="b_f2" sourceRef="b_check" targetRef="b_ok" />
+    <b:sequenceFlow id="b_f3" sourceRef="b_ok" targetRef="b_yes" name="Да">
+      <b:conditionExpression xsi:type="b:tFormalExpression">b_ok_condition = true</b:conditionExpression>
+    </b:sequenceFlow>
+    <b:sequenceFlow id="b_f4" sourceRef="b_yes" targetRef="b_directions" />
+    <b:sequenceFlow id="b_f5" sourceRef="b_directions" targetRef="b_end" />
+    <b:sequenceFlow id="b_f6" sourceRef="b_ok" targetRef="b_no" name="Нет" />
+    <b:sequenceFlow id="b_f7" sourceRef="b_no" targetRef="b_no_end" />
+  </b:process>
+  <b:collaboration id="collab_practice_places" name="Предоставление мест для прохождения практики">
+    <b:participant id="participant_dept" name="Кафедра" processRef="p_dept" />
+    <b:participant id="participant_partner" name="База практики" processRef="p_partner" />
+    <b:messageFlow id="m_request" name="Заявка" sourceRef="request" targetRef="b_start" messageRef="msg_b_start" />
+    <b:messageFlow id="m_confirmation" name="Подтверждение" sourceRef="b_yes" targetRef="reply" messageRef="msg_reply" />
+    <b:messageFlow id="m_refusal" name="Отказ" sourceRef="b_no" targetRef="reply" messageRef="msg_reply" />
+    <b:messageFlow id="m_directions" name="Направления" sourceRef="directions" targetRef="b_directions" messageRef="msg_b_directions" />
+  </b:collaboration>
+  <d:BPMNDiagram id="diagram_practice_places">
+    <d:BPMNPlane id="plane_practice_places" bpmnElement="collab_practice_places">
+      <d:BPMNShape id="shape_participant_dept" bpmnElement="participant_dept" isHorizontal="true">
+        <dc:Bounds x="40" y="100" width="1660" height="300" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_participant_partner" bpmnElement="participant_partner" isHorizontal="true">
+        <dc:Bounds x="40" y="460" width="1660" height="300" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_start" bpmnElement="start" isMarkerVisible="true">
+        <dc:Bounds x="240" y="170" width="40" height="40" />
+        <d:BPMNLabel>
+          <dc:Bounds x="200" y="218" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_merge" bpmnElement="merge" isMarkerVisible="true">
+        <dc:Bounds x="345" y="167" width="50" height="50" />
+        <d:BPMNLabel>
+          <dc:Bounds x="305" y="115" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_select" bpmnElement="select" isMarkerVisible="true">
+        <dc:Bounds x="450" y="155" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_request" bpmnElement="request" isMarkerVisible="true">
+        <dc:Bounds x="680" y="155" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_reply" bpmnElement="reply" isMarkerVisible="true">
+        <dc:Bounds x="910" y="155" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_places" bpmnElement="places" isMarkerVisible="true">
+        <dc:Bounds x="1140" y="167" width="50" height="50" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1100" y="115" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_directions" bpmnElement="directions" isMarkerVisible="true">
+        <dc:Bounds x="1260" y="135" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_end" bpmnElement="end" isMarkerVisible="true">
+        <dc:Bounds x="1490" y="170" width="40" height="40" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1450" y="218" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_other" bpmnElement="other" isMarkerVisible="true">
+        <dc:Bounds x="1260" y="285" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_b_start" bpmnElement="b_start" isMarkerVisible="true">
+        <dc:Bounds x="680" y="530" width="40" height="40" />
+        <d:BPMNLabel>
+          <dc:Bounds x="640" y="578" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_b_check" bpmnElement="b_check" isMarkerVisible="true">
+        <dc:Bounds x="790" y="515" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_b_ok" bpmnElement="b_ok" isMarkerVisible="true">
+        <dc:Bounds x="1020" y="527" width="50" height="50" />
+        <d:BPMNLabel>
+          <dc:Bounds x="980" y="475" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_b_yes" bpmnElement="b_yes" isMarkerVisible="true">
+        <dc:Bounds x="1140" y="495" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_b_directions" bpmnElement="b_directions" isMarkerVisible="true">
+        <dc:Bounds x="1370" y="495" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_b_end" bpmnElement="b_end" isMarkerVisible="true">
+        <dc:Bounds x="1600" y="530" width="40" height="40" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1560" y="578" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_b_no" bpmnElement="b_no" isMarkerVisible="true">
+        <dc:Bounds x="1140" y="625" width="190" height="74" />
+      </d:BPMNShape>
+      <d:BPMNShape id="shape_b_no_end" bpmnElement="b_no_end" isMarkerVisible="true">
+        <dc:Bounds x="1370" y="640" width="40" height="40" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1330" y="688" width="130" height="45" />
+        </d:BPMNLabel>
+      </d:BPMNShape>
+      <d:BPMNEdge id="edge_f1" bpmnElement="f1">
+        <di:waypoint x="280" y="190" />
+        <di:waypoint x="312" y="190" />
+        <di:waypoint x="312" y="192" />
+        <di:waypoint x="345" y="192" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_f2" bpmnElement="f2">
+        <di:waypoint x="395" y="192" />
+        <di:waypoint x="450" y="192" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_f3" bpmnElement="f3">
+        <di:waypoint x="640" y="192" />
+        <di:waypoint x="680" y="192" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_f4" bpmnElement="f4">
+        <di:waypoint x="870" y="192" />
+        <di:waypoint x="910" y="192" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_f5" bpmnElement="f5">
+        <di:waypoint x="1100" y="192" />
+        <di:waypoint x="1140" y="192" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_f6" bpmnElement="f6">
+        <di:waypoint x="1190" y="192" />
+        <di:waypoint x="1225" y="192" />
+        <di:waypoint x="1225" y="172" />
+        <di:waypoint x="1260" y="172" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1187" y="166" width="40" height="22" />
+        </d:BPMNLabel>
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_f7" bpmnElement="f7">
+        <di:waypoint x="1450" y="172" />
+        <di:waypoint x="1470" y="172" />
+        <di:waypoint x="1470" y="190" />
+        <di:waypoint x="1490" y="190" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_f8" bpmnElement="f8">
+        <di:waypoint x="1165" y="217" />
+        <di:waypoint x="1165" y="322" />
+        <di:waypoint x="1260" y="322" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1173" y="258" width="40" height="22" />
+        </d:BPMNLabel>
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_f9" bpmnElement="f9">
+        <di:waypoint x="1355" y="359" />
+        <di:waypoint x="1355" y="380" />
+        <di:waypoint x="310" y="380" />
+        <di:waypoint x="310" y="192" />
+        <di:waypoint x="345" y="192" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_b_f1" bpmnElement="b_f1">
+        <di:waypoint x="720" y="550" />
+        <di:waypoint x="755" y="550" />
+        <di:waypoint x="755" y="552" />
+        <di:waypoint x="790" y="552" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_b_f2" bpmnElement="b_f2">
+        <di:waypoint x="980" y="552" />
+        <di:waypoint x="1020" y="552" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_b_f3" bpmnElement="b_f3">
+        <di:waypoint x="1070" y="552" />
+        <di:waypoint x="1105" y="552" />
+        <di:waypoint x="1105" y="532" />
+        <di:waypoint x="1140" y="532" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1067" y="526" width="40" height="22" />
+        </d:BPMNLabel>
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_b_f4" bpmnElement="b_f4">
+        <di:waypoint x="1330" y="532" />
+        <di:waypoint x="1370" y="532" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_b_f5" bpmnElement="b_f5">
+        <di:waypoint x="1560" y="532" />
+        <di:waypoint x="1580" y="532" />
+        <di:waypoint x="1580" y="550" />
+        <di:waypoint x="1600" y="550" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_b_f6" bpmnElement="b_f6">
+        <di:waypoint x="1045" y="577" />
+        <di:waypoint x="1045" y="662" />
+        <di:waypoint x="1140" y="662" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1072" y="636" width="40" height="22" />
+        </d:BPMNLabel>
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_b_f7" bpmnElement="b_f7">
+        <di:waypoint x="1330" y="662" />
+        <di:waypoint x="1350" y="662" />
+        <di:waypoint x="1350" y="660" />
+        <di:waypoint x="1370" y="660" />
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_m_request" bpmnElement="m_request">
+        <di:waypoint x="775" y="229" />
+        <di:waypoint x="775" y="395" />
+        <di:waypoint x="700" y="395" />
+        <di:waypoint x="700" y="530" />
+        <d:BPMNLabel>
+          <dc:Bounds x="790" y="260" width="160" height="20" />
+        </d:BPMNLabel>
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_m_confirmation" bpmnElement="m_confirmation">
+        <di:waypoint x="1235" y="495" />
+        <di:waypoint x="1235" y="420" />
+        <di:waypoint x="1005" y="420" />
+        <di:waypoint x="1005" y="229" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1054" y="396" width="133" height="20" />
+        </d:BPMNLabel>
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_m_refusal" bpmnElement="m_refusal">
+        <di:waypoint x="1140" y="662" />
+        <di:waypoint x="1110" y="662" />
+        <di:waypoint x="1110" y="440" />
+        <di:waypoint x="1005" y="440" />
+        <di:waypoint x="1005" y="229" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1012" y="416" width="90" height="20" />
+        </d:BPMNLabel>
+      </d:BPMNEdge>
+      <d:BPMNEdge id="edge_m_directions" bpmnElement="m_directions">
+        <di:waypoint x="1450" y="172" />
+        <di:waypoint x="1545" y="172" />
+        <di:waypoint x="1545" y="395" />
+        <di:waypoint x="1465" y="395" />
+        <di:waypoint x="1465" y="495" />
+        <d:BPMNLabel>
+          <dc:Bounds x="1560" y="310" width="130" height="20" />
+        </d:BPMNLabel>
+      </d:BPMNEdge>
+    </d:BPMNPlane>
+  </d:BPMNDiagram>
+</b:definitions>

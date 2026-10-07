@@ -1,0 +1,37 @@
+@startuml
+allowmixing
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+package "Use-Case Model" {
+  usecase "UC-1 Войти" as U1
+  usecase "UC-2 Купить билет" as U2
+  usecase "UC-3 Вернуть билет" as U3
+  usecase "UC-4 Опубликовать сеанс" as U4
+}
+package "Use-Case Realizations" {
+  class "LoginRealization" as R1 <<realization>>
+  class "PurchaseRealization" as R2 <<realization>>
+  class "RefundRealization" as R3 <<realization>>
+  class "PublishRealization" as R4 <<realization>>
+}
+package "Design Model" {
+  class "Viewer"
+  class "BookingOrder"
+  class "Ticket"
+  class "MovieSession"
+  class "BookingController"
+  class "ScheduleController"
+}
+R1 ..> U1 : <<trace>>
+R2 ..> U2 : <<trace>>
+R3 ..> U3 : <<trace>>
+R4 ..> U4 : <<trace>>
+R2 ..> BookingController
+R2 ..> BookingOrder
+R2 ..> Ticket
+R3 ..> Ticket
+R4 ..> ScheduleController
+R4 ..> MovieSession
+R1 ..> Viewer
+@enduml

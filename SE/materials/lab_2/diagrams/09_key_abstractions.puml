@@ -1,0 +1,28 @@
+@startuml
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+title Ключевые абстракции системы кинотеатра
+package "Каталог и расписание" {
+  class Movie <<entity>>
+  class CinemaHall <<entity>>
+  class HallSeat <<entity>>
+  class MovieSession <<entity>>
+}
+package "Продажа и доступ" {
+  class Viewer <<entity>>
+  class BookingOrder <<entity>>
+  class SeatHold <<entity>>
+  class Ticket <<entity>>
+  class Payment <<entity>>
+}
+Movie "1" -- "0..*" MovieSession
+CinemaHall "1" -- "0..*" MovieSession
+CinemaHall "1" *-- "1..*" HallSeat
+Viewer "1" -- "0..*" BookingOrder
+BookingOrder "1" *-- "1..*" Ticket
+MovieSession "1" -- "0..*" Ticket
+HallSeat "1" -- "0..*" Ticket
+SeatHold "1" -- "1" Ticket
+BookingOrder "1" -- "0..*" Payment
+@enduml

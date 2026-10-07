@@ -1,0 +1,22 @@
+@startuml
+title initialize — запуск подсистемы каталога
+autonumber
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+control ":CinemaApplication" as App
+boundary ":CinemaCatalogBoundary" as Proxy
+boundary ":LegacyMovieCatalogBoundary" as Legacy
+database ":CinemaDatabase" as DB
+App -> Proxy : initialize()
+Proxy -> Legacy : checkReadOnlyConnection()
+alt каталог доступен
+  Legacy --> Proxy : connection ready
+  Proxy -> DB : loadCatalogSnapshotMetadata()
+  DB --> Proxy : version, lastSyncAt
+  Proxy --> App : ready
+else каталог недоступен
+  Legacy --> Proxy : error
+  Proxy --> App : degraded read mode / explicit error
+end
+@enduml

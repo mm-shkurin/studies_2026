@@ -1,0 +1,42 @@
+@startuml
+left to right direction
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+actor "Зритель" as Viewer
+actor "Кассир" as Cashier
+actor "Администратор" as Admin
+actor "Платёжный шлюз" as Bank
+actor "Сервис уведомлений" as Notify
+rectangle "Система продажи билетов кинотеатра" {
+  usecase "Войти в систему" as Login
+  usecase "Найти сеанс" as Browse
+  usecase "Выбрать место" as Seat
+  usecase "Купить билет" as Buy
+  usecase "Заблокировать место" as Hold
+  usecase "Оплатить заказ" as Pay
+  usecase "Оплатить онлайн" as Online
+  usecase "Оплатить в кассе" as Cash
+  usecase "Выдать билет" as Issue
+  usecase "Применить промокод" as Promo
+  usecase "Вернуть билет" as Refund
+  usecase "Опубликовать сеанс" as Publish
+}
+Viewer --> Browse
+Viewer --> Buy
+Viewer --> Refund
+Cashier --> Buy
+Cashier --> Refund
+Cashier --> Login
+Admin --> Login
+Admin --> Publish
+Buy ..> Seat : <<include>>
+Buy ..> Hold : <<include>>
+Buy ..> Pay : <<include>>
+Buy ..> Issue : <<include>>
+Promo ..> Buy : <<extend>>
+Pay <|-- Online
+Pay <|-- Cash
+Online --> Bank
+Issue --> Notify
+@enduml

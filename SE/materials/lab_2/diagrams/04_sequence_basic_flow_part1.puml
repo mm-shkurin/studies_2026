@@ -1,0 +1,24 @@
+@startuml
+title Фаза 1 — выбор сеанса
+autonumber
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+actor "Зритель" as Viewer
+boundary ":BookingUI" as UI
+control ":BookingController" as Ctrl
+boundary ":CinemaCatalogBoundary" as Catalog
+entity ":MovieSession" as Session
+Viewer -> UI : открыть афишу(дата)
+UI -> Ctrl : listSessions(дата)
+Ctrl -> Catalog : getPublishedSessions(дата)
+Catalog --> Ctrl : список сеансов
+Ctrl --> UI : фильмы, время, цена
+UI --> Viewer : показать афишу
+Viewer -> UI : выбрать сеанс(sessionId)
+UI -> Ctrl : getSeatMap(sessionId)
+Ctrl -> Session : currentSeatStates()
+Session --> Ctrl : карта мест
+Ctrl --> UI : FREE / LOCKED / SOLD
+UI --> Viewer : показать доступные места
+@enduml

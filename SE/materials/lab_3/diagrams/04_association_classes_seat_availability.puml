@@ -1,0 +1,30 @@
+@startuml
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+title Класс-ассоциация доступности места на сеансе
+class MovieSession {
+  +id: UUID
+  +startsAt: DateTime
+}
+class HallSeat {
+  +id: UUID
+  +row: int
+  +number: int
+}
+class SeatAvailability <<association class>> {
+  +state: SeatState
+  +heldUntil: DateTime [0..1]
+  +orderId: UUID [0..1]
+  +lock(ttl): bool
+  +release(): void
+}
+MovieSession "0..*" -- "1..*" HallSeat : available seats
+(MovieSession, HallSeat) .. SeatAvailability
+note right of SeatAvailability
+  FREE, LOCKED и SOLD относятся к паре
+  (сеанс, физическое место), а не к креслу
+  независимо от конкретного сеанса.
+end note
+@enduml

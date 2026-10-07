@@ -1,0 +1,35 @@
+@startuml
+skinparam defaultFontName Arial
+skinparam classAttributeIconSize 0
+title ЛР 4 – UML-контракт билета
+class Ticket <<entity>> {
+ -ticketId: UUID
+ -sessionId: UUID
+ -seatId: UUID
+ -priceKopecks: Integer = 0
+ -status: TicketStatus = RESERVED_LOCK
+ -paymentTransactionId: String [0..1]
+ +reserve(sessionId: UUID, seatId: UUID, priceKopecks: Integer): Ticket
+ +getStatus(): TicketStatus {query}
+ +markPaid(transactionId: String): void
+ +checkIn(): void
+ +cancel(): void
+ +refund(): void
+ #canRefund(): Boolean {query}
+}
+enum TicketStatus {
+ RESERVED_LOCK
+ PAID_CONFIRMED
+ CHECKED_IN
+ REFUNDED
+ CANCELLED_EXPIRED
+}
+Ticket --> TicketStatus
+note bottom of Ticket
+ Цена: целое число копеек, >= 0.
+ Место принадлежит залу выбранного сеанса.
+ Один активный билет на пару сеанс/место.
+ Подтверждение оплаты требует непустого ID транзакции.
+ Методы обозначают предметные операции и видимость.
+end note
+@enduml

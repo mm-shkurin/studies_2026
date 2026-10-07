@@ -1,0 +1,30 @@
+@startuml
+skinparam defaultFontName Arial
+skinparam componentStyle rectangle
+title ЛР 4 – физическая топология и стек сетевого обмена
+node "Устройство зрителя" as client <<device>>
+node "Терминал кассира" as cashier <<device>>
+node "Сервер приложений" as app <<device>>
+node "PostgreSQL\nПостоянные данные" as db <<device>>
+node "Redis\nВременные удержания" as redis <<device>>
+node "RabbitMQ\nОчередь уведомлений" as queue <<device>>
+node "Платёжный провайдер" as pay <<external>>
+node "Провайдер уведомлений" as notify <<external>>
+client -- app : HTTP/1.1 / TLS 1.3\nTCP 443 / IPv4\nIEEE 802.11 → 802.3
+cashier -- app : HTTP/1.1 / TLS 1.3\nTCP 443 / IPv4 / IEEE 802.3
+app -- db : PostgreSQL wire v3 / TLS 1.3\nTCP 5432 / IPv4 / IEEE 802.3
+app -- redis : RESP2 / TLS 1.3\nTCP 6380 / IPv4 / IEEE 802.3
+app -- queue : AMQP 0-9-1 / TLS 1.3\nTCP 5671 / IPv4 / IEEE 802.3
+app -- pay : HTTP/1.1 / TLS 1.3\nTCP 443 / IPv4 / Ethernet
+app -- notify : HTTP/1.1 / TLS 1.3\nTCP 443 / IPv4 / Ethernet
+note bottom of app
+ Проектная конфигурация; порты назначения явно заданы.
+ ОС: вытесняющее планирование, изоляция процессов.
+ CPU/RAM выбираются после расчёта нагрузки.
+ Публичный канал маршрутизируется через сеть оператора.
+end note
+note bottom of db
+ Оплаченные билеты хранятся постоянно.
+ TTL не заменяет транзакционную базу данных.
+end note
+@enduml

@@ -1,0 +1,61 @@
+@startuml
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+title Атрибуты и операции предметных классов
+class Viewer {
+  -id: UUID
+  -name: String
+  -email: String
+  +getOrders(): List<BookingOrder>
+}
+class Movie {
+  -id: UUID
+  -title: String
+  -durationMinutes: int
+  -ageRating: int
+  +getDuration(): int
+}
+class CinemaHall {
+  -id: UUID
+  -name: String
+  -capacity: int
+  +getSeats(): List<HallSeat>
+}
+class HallSeat {
+  -id: UUID
+  -row: int
+  -number: int
+  +getCoordinates(): Pair<int,int>
+}
+class MovieSession {
+  -id: UUID
+  -startsAt: DateTime
+  -endsAt: DateTime
+  -basePrice: Money
+  +lockSeats(seats, ttl): bool
+  +confirmSeatSold(seat, ticketId): bool
+}
+class BookingOrder {
+  -id: UUID
+  -expiresAt: DateTime
+  -status: OrderStatus
+  +getTotal(): Money
+}
+class Ticket {
+  -id: UUID
+  -status: TicketStatus
+  -price: Money
+  +markPaid(txId): void
+  +cancel(): void
+  +checkIn(): void
+}
+Viewer "1" -- "0..*" BookingOrder
+Movie "1" -- "0..*" MovieSession
+CinemaHall "1" *-- "1..*" HallSeat
+CinemaHall "1" -- "0..*" MovieSession
+BookingOrder "1" *-- "1..*" Ticket
+MovieSession "1" -- "0..*" Ticket
+HallSeat "1" -- "0..*" Ticket
+@enduml

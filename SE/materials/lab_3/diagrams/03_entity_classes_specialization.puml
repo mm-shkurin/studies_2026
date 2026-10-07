@@ -1,0 +1,41 @@
+@startuml
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+title Специализация зрителей и каналов оплаты
+abstract class Viewer {
+  -id: UUID
+  -contact: String
+  +purchaseTicket(): BookingOrder
+}
+class RegisteredViewer {
+  -accountId: UUID
+  +viewHistory(): List<BookingOrder>
+  +requestRefund(ticketId): void
+}
+class GuestViewer {
+  -email: String
+  +receiveTicketByEmail(): void
+}
+abstract class PaymentMethod {
+  +authorize(orderId, amount): PaymentResult
+}
+class OnlinePayment {
+  -provider: String
+  +authorize(orderId, amount): PaymentResult
+}
+class CashDeskPayment {
+  -cashierId: UUID
+  +authorize(orderId, amount): PaymentResult
+}
+Viewer <|-- RegisteredViewer
+Viewer <|-- GuestViewer
+PaymentMethod <|-- OnlinePayment
+PaymentMethod <|-- CashDeskPayment
+note right of Viewer
+  Разделение типов не меняет единое правило:
+  оплаченный билет возникает только после
+  подтверждённого платежа.
+end note
+@enduml
