@@ -1,0 +1,86 @@
+@startuml VOPCDiagram
+skinparam style strictuml
+
+class RideUI <<Boundary>> {
+  + searchVehicles(location: Location)
+  + selectDriver(driver: Driver)
+  + confirmRide()
+  + cancelRide()
+  + rateRide(rating: int)
+}
+
+class RideController <<Control>> {
+  + findAvailableVehicles(location: Location): List<Driver>
+  + assignDriver(ride: Ride, driver: Driver): boolean
+  + calculateCost(ride: Ride): Money
+  + processPayment(ride: Ride, payment: Payment): boolean
+  + completeRide(ride: Ride)
+}
+
+class Ride <<Entity>> {
+  - id: String
+  - passenger: Passenger
+  - driver: Driver
+  - status: RideStatus
+  - cost: Money
+  - startTime: DateTime
+  - endTime: DateTime
+  + cancel()
+  + complete()
+}
+
+class Driver <<Entity>> {
+  - id: String
+  - name: String
+  - vehicle: Vehicle
+  - status: DriverStatus
+  - currentLocation: Location
+  + isAvailable(): boolean
+}
+
+class Vehicle <<Entity>> {
+  - id: String
+  - model: String
+  - licensePlate: String
+  - capacity: int
+}
+
+class Location <<Entity>> {
+  - address: String
+  - latitude: double
+  - longitude: double
+}
+
+class Payment <<Entity>> {
+  - id: String
+  - amount: Money
+  - method: PaymentMethod
+  - status: PaymentStatus
+  + process(): boolean
+}
+
+class Rating <<Entity>> {
+  - id: String
+  - ride: Ride
+  - score: int
+  - comment: String
+  + submit()
+}
+
+class Passenger <<Entity>> {
+  - id: String
+  - name: String
+  - phone: String
+  - rating: double
+}
+
+RideUI --> RideController
+RideController --> Ride
+RideController --> Driver
+RideController --> Payment
+RideController --> Location
+RideController --> Vehicle
+Ride --> Passenger
+Ride --> Rating
+Driver --> Vehicle
+@enduml

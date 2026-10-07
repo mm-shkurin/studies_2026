@@ -1,0 +1,27 @@
+@startuml SequencePhase2
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor "Пассажир" as passenger
+participant "RideUI" as ui <<Boundary>>
+participant "RideController" as controller <<Control>>
+participant "Ride" as ride <<Entity>>
+participant "Driver" as driver <<Entity>>
+participant "PricingService" as pricing <<Entity>>
+
+passenger -> ui: selectDriver(selectedDriver)
+ui -> controller: assignDriver(ride, selectedDriver)
+controller -> driver: isAvailable()
+driver --> controller: availability
+alt driver available
+  controller -> ride: create(passenger, driver)
+  controller -> pricing: calculateCost(ride)
+  pricing --> controller: cost
+  controller -> ride: setCost(cost)
+  controller --> ui: rideConfirmed
+  ui --> passenger: showCost(cost)
+else driver not available
+  controller --> ui: driverUnavailable
+  ui --> passenger: showDriverUnavailable()
+end
+@enduml

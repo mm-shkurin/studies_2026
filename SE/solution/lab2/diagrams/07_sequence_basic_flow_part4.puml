@@ -1,0 +1,29 @@
+@startuml SequencePhase4
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor "Водитель" as driver
+actor "Пассажир" as passenger
+participant "DriverApp" as driverApp <<Boundary>>
+participant "RideController" as controller <<Control>>
+participant "Ride" as ride <<Entity>>
+participant "Rating" as rating <<Entity>>
+
+driver -> driverApp: startRide()
+driverApp -> controller: startRide(ride.id)
+controller -> ride: setStatus(IN_PROGRESS)
+controller --> driverApp: rideStarted
+driverApp --> driver: showRideStarted()
+
+driver -> driverApp: completeRide()
+driverApp -> controller: completeRide(ride.id)
+controller -> ride: setStatus(COMPLETED)
+controller -> ride: recordEndTime()
+controller --> driverApp: rideCompleted
+driverApp --> driver: showRideCompleted()
+
+passenger -> controller: rateRide(ride.id, score, comment)
+controller -> rating: create(ride, score, comment)
+controller -> ride: addRating(rating)
+controller --> passenger: ratingSubmitted
+@enduml

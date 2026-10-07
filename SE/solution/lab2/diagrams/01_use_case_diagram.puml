@@ -1,0 +1,32 @@
+@startuml UseCaseDiagram
+skinparam style strictuml
+left to right direction
+
+actor "Пассажир" as passenger
+actor "Водитель" as driver
+actor "Диспетчер" as dispatcher
+
+rectangle "Система заказа такси" {
+  usecase "Заказать такси" as purchase
+  usecase "Выполнить поездку" as execute
+  usecase "Поиск свободных машин" as search
+  usecase "Назначить водителя" as assign
+  usecase "Рассчитать стоимость" as calculate
+  usecase "Оплатить поездку" as pay
+  usecase "Отменить заказ" as cancel
+  usecase "Оценить поездку" as rate
+}
+
+passenger --> purchase
+passenger --> execute
+driver --> execute
+dispatcher --> purchase
+dispatcher --> execute
+
+purchase ..> search : <<include>>
+purchase ..> assign : <<include>>
+purchase ..> calculate : <<include>>
+purchase ..> pay : <<include>>
+purchase ..> cancel : <<extend>>
+execute ..> rate : <<extend>>
+@enduml

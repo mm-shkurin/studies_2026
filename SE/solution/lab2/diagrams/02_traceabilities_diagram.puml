@@ -1,0 +1,32 @@
+@startuml TraceabilityDiagram
+skinparam style strictuml
+
+package "Use Cases" {
+  usecase "Заказать такси" as uc_purchase
+  usecase "Выполнить поездку" as uc_execute
+}
+
+package "Use-Case Realizations" {
+  package "Purchase Ride Realization" {
+    usecase "Purchase Ride" as uc_real_purchase
+  }
+  package "Execute Ride Realization" {
+    usecase "Execute Ride" as uc_real_execute
+  }
+}
+
+uc_purchase ..> uc_real_purchase : <<realizes>>
+uc_execute ..> uc_real_execute : <<realizes>>
+
+package "Analysis Classes" {
+  class RideController
+  class Ride
+  class DriverController
+  class Driver
+}
+
+uc_real_purchase ..> RideController
+uc_real_purchase ..> Ride
+uc_real_execute ..> DriverController
+uc_real_execute ..> Driver
+@enduml

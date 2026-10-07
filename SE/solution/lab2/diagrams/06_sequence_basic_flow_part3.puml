@@ -1,0 +1,27 @@
+@startuml SequencePhase3
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor "Пассажир" as passenger
+participant "RideUI" as ui <<Boundary>>
+participant "RideController" as controller <<Control>>
+participant "Ride" as ride <<Entity>>
+participant "PaymentGateway" as gateway <<Entity>>
+
+passenger -> ui: confirmRide()
+ui -> controller: processPayment(ride, payment)
+controller -> gateway: process(payment.amount, payment.method)
+gateway --> controller: paymentResult
+
+alt payment successful
+  controller -> ride: setStatus(PAID)
+  controller -> ride: assignDriver()
+  controller --> ui: paymentConfirmed
+  ui --> passenger: showPaymentSuccess()
+else payment failed
+  controller -> ride: cancel()
+  controller -> ride: releaseDriver()
+  controller --> ui: paymentFailed
+  ui --> passenger: showPaymentError()
+end
+@enduml
