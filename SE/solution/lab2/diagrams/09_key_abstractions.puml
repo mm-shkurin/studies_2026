@@ -1,0 +1,26 @@
+@startuml 09_key_abstractions
+skinparam style strictuml
+title Ключевые абстракции системы заказа такси
+
+package "Предметная область" {
+  class Passenger <<entity>>
+  class Driver <<entity>>
+  class Vehicle <<entity>>
+  class Ride <<entity>>
+  class Location <<entity>>
+}
+
+package "Платежи и оценки" {
+  class Payment <<entity>>
+  class Rating <<entity>>
+}
+
+Passenger "1" -- "0..*" Ride
+Driver "1" -- "0..*" Ride
+Vehicle "1" -- "1" Driver
+Ride "1" -- "1" Location
+Ride "1" -- "0..1" Payment
+Ride "1" -- "0..1" Rating
+Payment "1" -- "1" Ride
+Rating "1" -- "1" Ride
+@enduml
