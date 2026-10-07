@@ -1,31 +1,31 @@
 @startuml CollaborationDiagram
 skinparam style strictuml
 
-object "BookingUI" as ui <<Boundary>>
-object "BookingController" as controller <<Control>>
-object "Booking" as booking <<Entity>>
-object "Flight" as flight <<Entity>>
-object "Seat" as seat <<Entity>>
-object "Payment" as payment <<Entity>>
-object "BoardingPass" as boarding_pass <<Entity>>
+participant "BookingUI" as ui <<Boundary>>
+participant "BookingController" as controller <<Control>>
+participant "Booking" as booking <<Entity>>
+participant "Flight" as flight <<Entity>>
+participant "Seat" as seat <<Entity>>
+participant "Payment" as payment <<Entity>>
+participant "BoardingPass" as boarding_pass <<Entity>>
 
-ui -- controller : 1. searchFlights()
-ui -- controller : 2. selectFlight()
-ui -- controller : 3. selectSeat()
-ui -- controller : 4. confirmBooking()
-ui -- controller : 5. checkin()
-
-controller -- flight : 1.1. findByCriteria()
-controller -- seat : 1.2. findAvailableSeats()
-controller -- seat : 2.1. isAvailable()
-controller -- booking : 2.2. create()
-controller -- booking : 2.3. calculatePrice()
-controller -- payment : 3.1. process()
-controller -- booking : 3.2. setStatus(PAID)
-controller -- booking : 3.3. confirmSeat()
-controller -- booking : 4.1. setStatus(CHECKED_IN)
-controller -- booking : 4.2. recordCheckinTime()
-controller -- boarding_pass : 4.3. generate()
+ui -> controller : 1. searchFlights()
+controller -> flight : 1.1. findByCriteria()
+controller -> seat : 1.2. findAvailableSeats()
+ui -> controller : 2. selectFlight()
+ui -> controller : 3. selectSeat()
+controller -> seat : 2.1. isAvailable()
+controller -> booking : 2.2. create()
+controller -> booking : 2.3. calculatePrice()
+ui -> controller : 4. confirmBooking()
+controller -> payment : 3.1. process()
+controller -> booking : 3.2. setStatus(PAID)
+controller -> booking : 3.3. confirmSeat()
+ui -> controller : 5. checkin()
+controller -> booking : 4.1. setStatus(CHECKED_IN)
+controller -> booking : 4.2. recordCheckinTime()
+controller -> boarding_pass : 4.3. generate()
+controller -> ui : result()
 
 note right of ui
   1-4: Purchase flow

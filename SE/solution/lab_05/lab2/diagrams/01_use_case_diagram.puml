@@ -26,9 +26,10 @@ passenger --> boarding
 
 purchase ..> search : <<include>>
 purchase ..> book : <<include>>
-purchase ..> payment_system : <<uses>>
+payment_system --> purchase
+booking_system --> purchase
 checkin ..> select_seat : <<include>>
-checkin ..> registration_system : <<uses>>
+registration_system --> checkin
 boarding ..> checkin : <<include>>
 manage ..> purchase : <<extend>>
 manage ..> checkin : <<extend>>
