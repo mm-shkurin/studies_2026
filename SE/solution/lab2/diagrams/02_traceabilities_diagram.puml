@@ -1,4 +1,4 @@
-@startuml TraceabilityDiagram
+@startuml 02_traceabilities_diagram
 skinparam style strictuml
 
 package "Use Cases" {
@@ -17,16 +17,4 @@ package "Use-Case Realizations" {
 
 uc_purchase ..> uc_real_purchase : <<realizes>>
 uc_execute ..> uc_real_execute : <<realizes>>
-
-package "Analysis Classes" {
-  class RideController
-  class Ride
-  class DriverController
-  class Driver
-}
-
-uc_real_purchase ..> RideController
-uc_real_purchase ..> Ride
-uc_real_execute ..> DriverController
-uc_real_execute ..> Driver
 @enduml
