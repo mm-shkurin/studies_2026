@@ -1,0 +1,23 @@
+{
+  "name": "Nobel Prize Viewer",
+  "short_name": "Nobel",
+  "description": "Приложение для просмотра Нобелевских премий и лауреатов",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#524FE5",
+  "icons": [
+    {
+      "src": "/icons.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

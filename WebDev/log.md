@@ -214,3 +214,12 @@
 - Решения пользователя: стратегия API — Network First, кешировать только данные API, обновлять кеш автоматически при следующем запросе
 - Обновлено: Карта ЛР 5 (добавлены требования manifest.json, регистрация service worker, уточнены стратегия и обновление кеша, улучшена проверка запуском), проверка ЛР 5 (plan) — вердикт «начинать»
 - Дальше: создание папки solution/lab5, копирование решения ЛР 4, добавление PWA и service worker
+
+## 2026-10-23 — ЛР 5: реализация
+- Сделано: создана папка solution/lab5, скопировано решение ЛР 4, добавлен PWA и service worker
+- Файлы: package.json (имя проекта lab5), index.html (добавлен <link rel='manifest'>), public/sw.js (service worker с Network First для API), public/manifest.json (PWA manifest с name, short_name, icons, start_url, display)
+- Изменено: src/main.js (регистрация service worker через navigator.serviceWorker.register с проверкой поддержки API)
+- Решения: стратегия кеширования API — Network First (сначала сеть, при ошибке кеш); кешируются только данные API, статические ресурсы не кешируются; кеш обновляется автоматически при следующем запросе после появления сети
+- Проверка: npm install выполнен успешно, npm run build выполнен успешно, sw.js и manifest.json скопированы в dist
+- Результат: PWA реализован, service worker зарегистрирован, кеширование API настроено
+- Дальше: проверка решения (/check-lab WebDev 5 solution)
