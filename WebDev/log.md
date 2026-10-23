@@ -156,3 +156,13 @@
 - Проверка: npm install выполнен успешно, npx tsc --noEmit (проверка типов) выполнен успешно, npm run build выполнен успешно
 - Результат: механизм строгой типизации данных из API реализован, проект ЛР 4 мигрирован на TypeScript, ЛР 1-3 остаются на JavaScript
 - Дальше: проверка решения (/check-lab WebDev 4 solution)
+
+## 2026-10-23 — ЛР 4: исправления по скептику
+- Сделано: исправлены HIGH и MED находки скептика по решению пользователя
+- HIGH: добавлено поле founded в LaureateCodec (t.union с date и null)
+- MED: добавлены ссылки на источники в кодеках и сервисах (документация io-ts, fp-ts, Nobel Prize API, axios)
+- MED: as any оставлен в decodePrizesResponse и decodeLaureatesResponse по решению пользователя
+- MED: main.js и router/index.js оставлены на JavaScript по решению пользователя (не связаны с типизацией API)
+- LOW: команда проверки запуском изменена на npm run type-check вместо npx tsc --noEmit
+- Проверка: npm run type-check выполнен успешно, npm run build выполнен успешно
+- Дальше: повторная проверка решения (/check-lab WebDev 4 solution)

@@ -2,6 +2,9 @@ import * as t from 'io-ts'
 import * as E from 'fp-ts/Either'
 import { PathReporter } from 'io-ts/PathReporter'
 
+// Источник: https://gcanti.github.io/io-ts/ (документация io-ts)
+// Источник: https://gcanti.github.io/fp-ts/modules/Either.html (документация fp-ts/Either)
+
 /**
  * Функция decodeOrThrow для обработки Either из io-ts.
  * При успешной декодировке возвращает декодированные данные.

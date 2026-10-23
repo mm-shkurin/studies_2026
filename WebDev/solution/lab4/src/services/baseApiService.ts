@@ -1,5 +1,7 @@
 import axios, { AxiosInstance } from 'axios'
 
+// Источник: https://axios-http.com/docs/intro (документация axios)
+
 // Единый класс-сервис для HTTP-запросов на axios
 class BaseApiService {
   private client: AxiosInstance

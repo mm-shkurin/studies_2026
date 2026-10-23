@@ -1,6 +1,8 @@
 import BaseApiService from './baseApiService'
 import { decodePrizesResponse, PrizesResponse, Prize } from '../codecs/prizesCodec'
 
+// Источник: https://api.nobelprize.org/v1/documentation (Nobel Prize API v1)
+
 // Класс-сервис для получения данных о премиях
 class PrizesService extends BaseApiService {
   constructor() {

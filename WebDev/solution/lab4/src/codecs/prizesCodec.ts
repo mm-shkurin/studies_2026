@@ -1,6 +1,9 @@
 import * as t from 'io-ts'
 import { decodeOrThrow } from './decodeOrThrow'
 
+// Источник: https://api.nobelprize.org/v1/documentation (Nobel Prize API v1)
+// Источник: https://gcanti.github.io/io-ts/ (документация io-ts)
+
 // Типы для Nobel Prize API v1
 
 // Структура отдельной премии
