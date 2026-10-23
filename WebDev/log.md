@@ -146,3 +146,13 @@
 - Решения пользователя: мигрировать только ЛР 4 на TypeScript, ЛР 1-3 оставить на JavaScript; decodeOrThrow вызывать в классах-сервисах
 - Обновлено: Карта ЛР 4 (добавлены требования по TypeScript и архитектуре decodeOrThrow, команда проверки с `npx tsc --noEmit`), проверка ЛР 4 (plan) — вердикт «начинать»
 - Дальше: создание папки solution/lab4, копирование решения ЛР 3, миграция на TypeScript, установка io-ts и fp-ts
+
+## 2026-10-23 — ЛР 4: реализация
+- Сделано: создана папка solution/lab4, скопировано решение ЛР 3, мигрировано на TypeScript, установлены io-ts и fp-ts, реализованы кодеки и decodeOrThrow
+- Файлы: package.json (обновлены зависимости: io-ts, fp-ts, typescript, vue-tsc), tsconfig.json, tsconfig.node.json, vite.config.ts, src/env.d.ts
+- Файлы сервисов: src/services/baseApiService.ts, src/services/prizesService.ts, src/services/laureatsService.ts (перенесены на TypeScript, типизированы)
+- Файлы кодеков: src/codecs/decodeOrThrow.ts (функция decodeOrThrow на fp-ts для обработки Either), src/codecs/prizesCodec.ts (кодек PrizeCodec, PrizesResponseCodec, decodePrizesResponse), src/codecs/laureatsCodec.ts (кодек LaureateCodec, LaureatesResponseCodec, decodeLaureatesResponse)
+- Решения: decodeOrThrow вызывается в классах-сервисах (prizesService, laureatsService) после получения данных от API; типы строго определены через io-ts кодеки; при несоответствии кодеку выбрасывается исключение с детальным описанием ошибок
+- Проверка: npm install выполнен успешно, npx tsc --noEmit (проверка типов) выполнен успешно, npm run build выполнен успешно
+- Результат: механизм строгой типизации данных из API реализован, проект ЛР 4 мигрирован на TypeScript, ЛР 1-3 остаются на JavaScript
+- Дальше: проверка решения (/check-lab WebDev 4 solution)
