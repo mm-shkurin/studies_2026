@@ -223,3 +223,31 @@
 - Проверка: npm install выполнен успешно, npm run build выполнен успешно, sw.js и manifest.json скопированы в dist
 - Результат: PWA реализован, service worker зарегистрирован, кеширование API настроено
 - Дальше: проверка решения (/check-lab WebDev 5 solution)
+
+## 2026-10-23 — ЛР 4: удаление комментариев
+- Сделано: удалены все комментарии из файлов ЛР 4 (codecs, services, vite.config.js)
+- Файлы: src/codecs/decodeOrThrow.js, src/codecs/prizesCodec.js, src/codecs/laureatsCodec.js, src/services/baseApiService.js, src/services/prizesService.js, src/services/laureatsService.js, vite.config.js
+- Результат: код без комментариев, ошибка сборки исправлена (удалены дублирующиеся строки class и export)
+- Проверка: npm run build выполнен успешно
+- Дальше: проверка в браузере
+
+## 2026-10-23 — ЛР 4: исправление валидации io-ts
+- Сделано: исправлены кодеки под реальную структуру API v1
+- Изменено: category — t.type({ en: t.string }) вместо t.literal с сокращениями; gender — t.string вместо t.literal
+- Изменено: PrizesView.vue — обновлены категории на полные названия (Physics, Chemistry и т.д.); обращение к prize.category.en
+- Изменено: prizesService.getPrizesByCategory — сравнение с prize.category.en
+- Изменено: laureatsService.getLaureatesByCategory — сравнение с prize.category.en
+- Результат: валидация данных из API должна проходить без ошибок
+- Дальше: проверка в браузере
+
+## 2026-10-23 — ЛР 4: переписывание кодеков под реальную структуру API
+- Сделано: переписаны кодеки под реальную структуру Nobel Prize API v1
+- Проблема: кодеки были написаны под документацию, но API возвращает другую структуру
+- Изменено: prizesCodec — PrizeCodec (year, category, laureates с id, firstname, surname, motivation, share)
+- Изменено: laureatsCodec — LaureateCodec (id, firstname, surname, born, died, gender, prizes с year, category, share, motivation)
+- Изменено: PrizesView.vue — обновлены заголовки таблицы, маппинг данных (year, category, laureates.length)
+- Изменено: LaureatsView.vue — обновлены заголовки таблицы, маппинг данных (firstname + surname, born, prizes.length)
+- Изменено: prizesService — обновлена фильтрация по category (строка)
+- Изменено: laureatsService — обновлена фильтрация по имени и категории
+- Проверка: npm run build выполнен успешно
+- Дальше: проверка в браузере
