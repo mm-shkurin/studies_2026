@@ -9,7 +9,6 @@ const filteredPrizes = ref([])
 const loading = ref(false)
 const error = ref(null)
 
-// Фильтрация по категории
 const selectedCategory = ref('')
 const categories = ref(['phy', 'che', 'med', 'lit', 'pea', 'eco'])
 const categoryLabels = {
@@ -21,11 +20,9 @@ const categoryLabels = {
   eco: 'Экономика'
 }
 
-// Пагинация
 const currentPage = ref(1)
 const itemsPerPage = 10
 
-// Вычисляемые свойства
 const totalPages = computed(() => Math.ceil(filteredPrizes.value.length / itemsPerPage))
 const paginatedPrizes = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage
@@ -33,7 +30,6 @@ const paginatedPrizes = computed(() => {
   return filteredPrizes.value.slice(start, end)
 })
 
-// Загрузка данных
 const loadPrizes = async () => {
   loading.value = true
   error.value = null
@@ -53,7 +49,6 @@ const loadPrizes = async () => {
   }
 }
 
-// Фильтрация
 const applyFilter = () => {
   if (selectedCategory.value) {
     const categoryName = categoryLabels[selectedCategory.value]
@@ -64,7 +59,6 @@ const applyFilter = () => {
   currentPage.value = 1
 }
 
-// Пагинация
 const nextPage = () => {
   if (currentPage.value < totalPages.value) currentPage.value++
 }

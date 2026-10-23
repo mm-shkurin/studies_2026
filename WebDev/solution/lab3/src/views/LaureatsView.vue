@@ -9,14 +9,11 @@ const filteredLaureats = ref([])
 const loading = ref(false)
 const error = ref(null)
 
-// Фильтрация по имени
 const searchName = ref('')
 
-// Пагинация
 const currentPage = ref(1)
 const itemsPerPage = 10
 
-// Вычисляемые свойства
 const totalPages = computed(() => Math.ceil(filteredLaureats.value.length / itemsPerPage))
 const paginatedLaureats = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage
@@ -24,7 +21,6 @@ const paginatedLaureats = computed(() => {
   return filteredLaureats.value.slice(start, end)
 })
 
-// Загрузка данных
 const loadLaureats = async () => {
   loading.value = true
   error.value = null
@@ -44,7 +40,6 @@ const loadLaureats = async () => {
   }
 }
 
-// Фильтрация
 const applyFilter = () => {
   if (searchName.value) {
     filteredLaureats.value = laureatsData.value.filter(row =>
@@ -56,7 +51,6 @@ const applyFilter = () => {
   currentPage.value = 1
 }
 
-// Пагинация
 const nextPage = () => {
   if (currentPage.value < totalPages.value) currentPage.value++
 }
