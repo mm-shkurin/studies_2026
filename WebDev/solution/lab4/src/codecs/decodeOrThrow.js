@@ -1,4 +1,3 @@
-import * as t from 'io-ts'
 import * as E from 'fp-ts/Either'
 import { PathReporter } from 'io-ts/PathReporter'
 
@@ -10,10 +9,10 @@ import { PathReporter } from 'io-ts/PathReporter'
  * При успешной декодировке возвращает декодированные данные.
  * При ошибке декодирования выбрасывает исключение с детальным описанием ошибок.
  *
- * @param codec - кодек io-ts для декодирования
- * @returns функция, которая принимает данные и возвращает декодированные данные или выбрасывает исключение
+ * @param {Object} codec - кодек io-ts для декодирования
+ * @returns {Function} функция, которая принимает данные и возвращает декодированные данные или выбрасывает исключение
  */
-export const decodeOrThrow = <I, O>(codec: t.Type<O, I>) => (input: I): O => {
+export const decodeOrThrow = (codec) => (input) => {
   const result = codec.decode(input)
 
   if (E.isLeft(result)) {

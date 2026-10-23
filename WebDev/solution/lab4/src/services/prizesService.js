@@ -1,5 +1,5 @@
 import BaseApiService from './baseApiService'
-import { decodePrizesResponse, PrizesResponse, Prize } from '../codecs/prizesCodec'
+import { decodePrizesResponse } from '../codecs/prizesCodec.js'
 
 // Источник: https://api.nobelprize.org/v1/documentation (Nobel Prize API v1)
 
@@ -9,17 +9,17 @@ class PrizesService extends BaseApiService {
     super('https://api.nobelprize.org/v1')
   }
 
-  async getPrizes(): Promise<PrizesResponse> {
+  async getPrizes() {
     const data = await this.get('/prize.json')
     return decodePrizesResponse(data)
   }
 
-  async getPrizesByCategory(category: string): Promise<Prize[]> {
+  async getPrizesByCategory(category) {
     const response = await this.getPrizes()
     return response.prizes.filter(prize => prize.category === category)
   }
 
-  async getPrizesByYear(year: string): Promise<Prize[]> {
+  async getPrizesByYear(year) {
     const response = await this.getPrizes()
     return response.prizes.filter(prize => prize.awardYear === year)
   }

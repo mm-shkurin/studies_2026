@@ -1,5 +1,5 @@
 import * as t from 'io-ts'
-import { decodeOrThrow } from './decodeOrThrow'
+import { decodeOrThrow } from './decodeOrThrow.js'
 
 // Источник: https://api.nobelprize.org/v1/documentation (Nobel Prize API v1)
 // Источник: https://gcanti.github.io/io-ts/ (документация io-ts)
@@ -29,8 +29,6 @@ export const NobelPrizeCodec = t.type({
   ]),
   sortOrder: t.union([t.number, t.null])
 })
-
-export type NobelPrize = t.TypeOf<typeof NobelPrizeCodec>
 
 // Структура лауреата
 export const LaureateCodec = t.type({
@@ -78,16 +76,12 @@ export const LaureateCodec = t.type({
   nobelPrizes: t.array(NobelPrizeCodec)
 })
 
-export type Laureate = t.TypeOf<typeof LaureateCodec>
-
 // Структура ответа API для лауреатов
 export const LaureatesResponseCodec = t.type({
   laureates: t.array(LaureateCodec)
 })
 
-export type LaureatesResponse = t.TypeOf<typeof LaureatesResponseCodec>
-
 // Декодирование ответа API с выбросом исключения при ошибке
-export const decodeLaureatesResponse = (data: unknown): LaureatesResponse => {
-  return decodeOrThrow(LaureatesResponseCodec)(data as any)
+export const decodeLaureatesResponse = (data) => {
+  return decodeOrThrow(LaureatesResponseCodec)(data)
 }

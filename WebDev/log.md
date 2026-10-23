@@ -176,3 +176,23 @@
 - Результат: все требования Карты ЛР 4 выполнены, механизм строгой типизации реализован, сборка и проверка типов проходят успешно
 - Обновлено: проверка ЛР 4 (solution) в progress.md, статус ЛР 4 — готова
 - Дальше: коммит решения
+
+## 2026-10-23 — ЛР 4: перереализация на JavaScript
+- Сделано: удалено решение на TypeScript, создано новое решение на JavaScript с io-ts для runtime-валидации
+- Файлы: package.json (зависимости: io-ts, fp-ts без typescript), src/codecs/decodeOrThrow.js, src/codecs/prizesCodec.js, src/codecs/laureatsCodec.js (на JavaScript)
+- Файлы сервисов: src/services/baseApiService.js, src/services/prizesService.js, src/services/laureatsService.js (используют decodeOrThrow для декодирования)
+- Решения пользователя: вариант на JavaScript (без TypeScript), io-ts используется для runtime-валидации данных
+- Проверка: npm install выполнен успешно, npm run build выполнен успешно
+- Результат: механизм строгой типизации данных из API реализован на JavaScript через io-ts
+- Дальше: проверка решения (/check-lab WebDev 4 solution)
+
+## 2026-10-23 — ЛР 4: проверка скептиком (solution, JS версия)
+- Сделано: запущен скептик для проверки решения ЛР 4 на JavaScript
+- Вердиект: сдавать
+- HIGH: нет
+- MED: нет
+- LOW: HelloWorld.vue не используется — косметика, не критично
+- Проверка запуском: npm install выполнен успешно, npm run build выполнен успешно
+- Результат: все требования Карты ЛР 4 выполнены, механизм строгой типизации реализован на JavaScript через io-ts
+- Обновлено: проверка ЛР 4 (solution) в progress.md, статус ЛР 4 — готова
+- Дальше: коммит решения

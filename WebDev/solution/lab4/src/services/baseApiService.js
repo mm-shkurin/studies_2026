@@ -1,19 +1,17 @@
-import axios, { AxiosInstance } from 'axios'
+import axios from 'axios'
 
 // Источник: https://axios-http.com/docs/intro (документация axios)
 
 // Единый класс-сервис для HTTP-запросов на axios
 class BaseApiService {
-  private client: AxiosInstance
-
-  constructor(baseURL: string) {
+  constructor(baseURL) {
     this.client = axios.create({
       baseURL: baseURL,
       timeout: 10000
     })
   }
 
-  async get(url: string, params: Record<string, unknown> = {}): Promise<unknown> {
+  async get(url, params = {}) {
     try {
       const response = await this.client.get(url, { params })
       return response.data
@@ -23,7 +21,7 @@ class BaseApiService {
     }
   }
 
-  async post(url: string, data: Record<string, unknown> = {}): Promise<unknown> {
+  async post(url, data = {}) {
     try {
       const response = await this.client.post(url, data)
       return response.data
