@@ -102,78 +102,139 @@ onMounted(() => {
 </template>
 
 <style scoped>
+* {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 header {
-  background-color: #524FE5;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 20px;
+  padding: 30px 20px;
   text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
 }
 
 nav {
-  background-color: #0400fc;
-  padding: 10px;
+  background-color: #ffffff;
+  padding: 15px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid #e0e0e0;
 }
 
 nav a {
-  color: white;
-  margin-right: 20px;
+  color: #333;
+  margin-right: 30px;
   text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #667eea;
 }
 
 nav a.router-link-active {
-  font-weight: bold;
-  text-decoration: underline;
+  color: #667eea;
+  font-weight: 600;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 5px;
 }
 
 main {
-  padding: 20px;
+  padding: 30px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .filter {
-  margin-bottom: 20px;
-  padding: 10px;
-  background-color: #f5f5f5;
-  border-radius: 4px;
+  margin-bottom: 25px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8e8e8;
 }
 
 .filter label {
-  font-weight: bold;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
 }
 
 .filter input {
-  margin-left: 10px;
-  padding: 5px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  margin-left: 12px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #d0d0d0;
+  background-color: #fff;
+  font-size: 0.9rem;
   width: 300px;
+  transition: all 0.3s ease;
+}
+
+.filter input:hover {
+  border-color: #667eea;
+}
+
+.filter input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .pagination {
-  margin-top: 20px;
+  margin-top: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .pagination button {
-  padding: 5px 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: white;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+}
+
+.pagination button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
 }
 
 .pagination button:disabled {
-  background-color: #f0f0f0;
+  background: #e0e0e0;
   cursor: not-allowed;
+  box-shadow: none;
+}
+
+.pagination span {
+  color: #666;
+  font-weight: 500;
 }
 
 footer {
-  background-color: #524FE5;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   text-align: center;
-  padding: 10px;
-  margin-top: 20px;
+  padding: 20px;
+  margin-top: 40px;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+}
+
+footer p {
+  margin: 0;
+  font-weight: 500;
 }
 </style>
