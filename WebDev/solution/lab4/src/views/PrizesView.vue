@@ -3,7 +3,7 @@ import { ref, onMounted, computed } from 'vue'
 import TableComponent from '../components/TableComponent.vue'
 import prizesService from '../services/prizesService'
 
-const prizesHeaders = ['Категория', 'Дата вручения', 'Стоимость гранта']
+const prizesHeaders = ['Категория', 'Дата вручения', 'Число лауреатов']
 const prizesData = ref([])
 const filteredPrizes = ref([])
 const loading = ref(false)
@@ -38,7 +38,7 @@ const loadPrizes = async () => {
     prizesData.value = data.prizes.map(prize => [
       categoryLabels[prize.category] || prize.category,
       prize.year,
-      'N/A'
+      prize.laureates ? prize.laureates.length : 0
     ])
     filteredPrizes.value = prizesData.value
   } catch (err) {
