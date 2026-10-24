@@ -107,11 +107,11 @@ onMounted(() => {
 }
 
 header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background-color: #f8f9fa;
+  color: #333;
   padding: 30px 20px;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #e0e0e0;
 }
 
 header h1 {
@@ -123,7 +123,6 @@ header h1 {
 nav {
   background-color: #ffffff;
   padding: 15px 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   border-bottom: 1px solid #e0e0e0;
 }
 
@@ -136,13 +135,13 @@ nav a {
 }
 
 nav a:hover {
-  color: #667eea;
+  color: #007bff;
 }
 
 nav a.router-link-active {
-  color: #667eea;
+  color: #007bff;
   font-weight: 600;
-  border-bottom: 2px solid #667eea;
+  border-bottom: 2px solid #007bff;
   padding-bottom: 5px;
 }
 
@@ -156,9 +155,8 @@ main {
   margin-bottom: 25px;
   padding: 20px;
   background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
 }
 
 .filter label {
@@ -170,22 +168,21 @@ main {
 .filter input {
   margin-left: 12px;
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: 4px;
   border: 1px solid #d0d0d0;
   background-color: #fff;
   font-size: 0.9rem;
   width: 300px;
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease;
 }
 
 .filter input:hover {
-  border-color: #667eea;
+  border-color: #007bff;
 }
 
 .filter input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #007bff;
 }
 
 .pagination {
@@ -198,25 +195,23 @@ main {
 
 .pagination button {
   padding: 10px 24px;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  background-color: #007bff;
   color: white;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+  transition: background-color 0.3s ease;
 }
 
 .pagination button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
+  background-color: #0056b3;
 }
 
 .pagination button:disabled {
-  background: #e0e0e0;
+  background-color: #e0e0e0;
+  border-color: #e0e0e0;
   cursor: not-allowed;
-  box-shadow: none;
 }
 
 .pagination span {
@@ -225,12 +220,12 @@ main {
 }
 
 footer {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background-color: #f8f9fa;
+  color: #333;
   text-align: center;
   padding: 20px;
   margin-top: 40px;
-  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid #e0e0e0;
 }
 
 footer p {

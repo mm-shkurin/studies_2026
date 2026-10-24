@@ -31,37 +31,31 @@ table {
   border-collapse: collapse;
   width: 100%;
   background-color: #ffffff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
 }
 
 thead {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: #f8f9fa;
 }
 
 th {
-  padding: 16px;
+  padding: 14px 16px;
   text-align: left;
-  color: white;
+  color: #333;
   font-weight: 600;
   font-size: 0.95rem;
-  border: none;
+  border-bottom: 2px solid #e0e0e0;
 }
 
 td {
-  padding: 14px 16px;
+  padding: 12px 16px;
   text-align: left;
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid #e0e0e0;
   color: #333;
 }
 
-tbody tr {
-  transition: background-color 0.2s ease;
-}
-
 tbody tr:hover {
-  background-color: #f8f9ff;
+  background-color: #f8f9fa;
 }
 
 tbody tr:nth-child(even) {
@@ -69,7 +63,7 @@ tbody tr:nth-child(even) {
 }
 
 tbody tr:nth-child(even):hover {
-  background-color: #f8f9ff;
+  background-color: #f8f9fa;
 }
 
 tbody tr:last-child td {
