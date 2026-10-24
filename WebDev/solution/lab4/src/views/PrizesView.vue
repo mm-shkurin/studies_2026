@@ -179,7 +179,7 @@ main {
   padding: 8px 16px;
   border-radius: 4px;
   border: 1px solid #d0d0d0;
-  background-color: #fff;
+  background-color: #c2c2c2;
   font-size: 0.9rem;
   cursor: pointer;
   transition: border-color 0.3s ease;
