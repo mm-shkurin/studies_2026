@@ -1,87 +1,47 @@
 import * as t from 'io-ts'
 import { decodeOrThrow } from './decodeOrThrow.js'
 
-// Источник: https://api.nobelprize.org/v1/documentation (Nobel Prize API v1)
-// Источник: https://gcanti.github.io/io-ts/ (документация io-ts)
-
-// Типы для Nobel Prize API v1
-
-// Структура отдельной премии лауреата
 export const NobelPrizeCodec = t.type({
+  year: t.string,
   category: t.union([
-    t.literal('che'),
-    t.literal('eco'),
-    t.literal('lit'),
-    t.literal('pea'),
-    t.literal('phy'),
-    t.literal('med')
+    t.literal('chemistry'),
+    t.literal('economics'),
+    t.literal('literature'),
+    t.literal('peace'),
+    t.literal('physics'),
+    t.literal('medicine')
   ]),
-  categoryFullName: t.type({
-    en: t.string
-  }),
-  awardYear: t.string,
-  dateAwarded: t.union([t.string, t.null]),
-  prizeAmount: t.number,
-  prizeAmountAdjusted: t.number,
-  motivation: t.union([
-    t.type({ en: t.string }),
-    t.null
-  ]),
-  sortOrder: t.union([t.number, t.null])
+  share: t.union([t.string, t.null, t.undefined]),
+  motivation: t.union([t.string, t.null, t.undefined]),
+  affiliations: t.unknown
 })
 
-// Структура лауреата
 export const LaureateCodec = t.type({
   id: t.string,
-  knownName: t.union([
-    t.type({ en: t.string }),
-    t.null
-  ]),
-  givenName: t.union([
-    t.type({ en: t.string }),
-    t.null
-  ]),
-  familyName: t.union([
-    t.type({ en: t.string }),
-    t.null
-  ]),
-  birth: t.union([
-    t.type({
-      date: t.string
-    }),
-    t.null
-  ]),
-  death: t.union([
-    t.type({
-      date: t.string
-    }),
-    t.null
-  ]),
-  founded: t.union([
-    t.type({
-      date: t.string
-    }),
-    t.null
-  ]),
+  firstname: t.union([t.string, t.null, t.undefined]),
+  surname: t.union([t.string, t.null, t.undefined]),
+  born: t.union([t.string, t.null, t.undefined]),
+  died: t.union([t.string, t.null, t.undefined]),
+  bornCountry: t.union([t.string, t.null, t.undefined]),
+  bornCountryCode: t.union([t.string, t.null, t.undefined]),
+  bornCity: t.union([t.string, t.null, t.undefined]),
+  diedCountry: t.union([t.string, t.null, t.undefined]),
+  diedCountryCode: t.union([t.string, t.null, t.undefined]),
+  diedCity: t.union([t.string, t.null, t.undefined]),
   gender: t.union([
     t.literal('male'),
     t.literal('female'),
     t.literal('org'),
-    t.null
+    t.null,
+    t.undefined
   ]),
-  orgName: t.union([
-    t.type({ en: t.string }),
-    t.null
-  ]),
-  nobelPrizes: t.array(NobelPrizeCodec)
+  prizes: t.array(NobelPrizeCodec)
 })
 
-// Структура ответа API для лауреатов
 export const LaureatesResponseCodec = t.type({
   laureates: t.array(LaureateCodec)
 })
 
-// Декодирование ответа API с выбросом исключения при ошибке
 export const decodeLaureatesResponse = (data) => {
   return decodeOrThrow(LaureatesResponseCodec)(data)
 }

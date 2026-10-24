@@ -10,14 +10,14 @@ const loading = ref(false)
 const error = ref(null)
 
 const selectedCategory = ref('')
-const categories = ref(['phy', 'che', 'med', 'lit', 'pea', 'eco'])
+const categories = ref(['physics', 'chemistry', 'medicine', 'literature', 'peace', 'economics'])
 const categoryLabels = {
-  phy: 'Физика',
-  che: 'Химия',
-  med: 'Медицина',
-  lit: 'Литература',
-  pea: 'Мир',
-  eco: 'Экономика'
+  physics: 'Физика',
+  chemistry: 'Химия',
+  medicine: 'Медицина',
+  literature: 'Литература',
+  peace: 'Мир',
+  economics: 'Экономика'
 }
 
 const currentPage = ref(1)
@@ -37,8 +37,8 @@ const loadPrizes = async () => {
     const data = await prizesService.getPrizes()
     prizesData.value = data.prizes.map(prize => [
       categoryLabels[prize.category] || prize.category,
-      prize.awardYear,
-      prize.prizeAmountAdjusted || 'N/A'
+      prize.year,
+      'N/A'
     ])
     filteredPrizes.value = prizesData.value
   } catch (err) {

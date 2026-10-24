@@ -1,61 +1,35 @@
 import * as t from 'io-ts'
 import { decodeOrThrow } from './decodeOrThrow.js'
 
-// Источник: https://api.nobelprize.org/v1/documentation (Nobel Prize API v1)
-// Источник: https://gcanti.github.io/io-ts/ (документация io-ts)
-
-// Типы для Nobel Prize API v1
-
-// Структура отдельной премии
 export const PrizeCodec = t.type({
-  awardYear: t.string,
+  year: t.string,
   category: t.union([
-    t.literal('che'),
-    t.literal('eco'),
-    t.literal('lit'),
-    t.literal('pea'),
-    t.literal('phy'),
-    t.literal('med')
+    t.literal('chemistry'),
+    t.literal('economics'),
+    t.literal('literature'),
+    t.literal('peace'),
+    t.literal('physics'),
+    t.literal('medicine')
   ]),
-  categoryFullName: t.type({
-    en: t.string
-  }),
-  dateAwarded: t.union([t.string, t.null]),
-  prizeAmount: t.number,
-  prizeAmountAdjusted: t.number,
-  laureates: t.array(
-    t.type({
-      id: t.string,
-      knownName: t.union([
-        t.type({ en: t.string }),
-        t.null
-      ]),
-      givenName: t.union([
-        t.type({ en: t.string }),
-        t.null
-      ]),
-      familyName: t.union([
-        t.type({ en: t.string }),
-        t.null
-      ]),
-      orgName: t.union([
-        t.type({ en: t.string }),
-        t.null
-      ]),
-      motivation: t.union([
-        t.type({ en: t.string }),
-        t.null
-      ])
-    })
-  )
+  overallMotivation: t.union([t.string, t.null, t.undefined]),
+  laureates: t.union([
+    t.array(
+      t.type({
+        id: t.string,
+        firstname: t.union([t.string, t.null, t.undefined]),
+        surname: t.union([t.string, t.null, t.undefined]),
+        motivation: t.union([t.string, t.null, t.undefined]),
+        share: t.union([t.string, t.null, t.undefined])
+      })
+    ),
+    t.undefined
+  ])
 })
 
-// Структура ответа API для премий
 export const PrizesResponseCodec = t.type({
   prizes: t.array(PrizeCodec)
 })
 
-// Декодирование ответа API с выбросом исключения при ошибке
 export const decodePrizesResponse = (data) => {
   return decodeOrThrow(PrizesResponseCodec)(data)
 }

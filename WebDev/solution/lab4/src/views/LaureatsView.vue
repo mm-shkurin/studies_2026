@@ -27,9 +27,9 @@ const loadLaureats = async () => {
   try {
     const data = await laureatsService.getLaureates()
     laureatsData.value = data.laureates.map(laureate => [
-      laureate.knownName ? laureate.knownName.en : laureate.orgName ? laureate.orgName.en : 'N/A',
-      laureate.birth ? laureate.birth.date : laureate.founded ? laureate.founded.date : 'N/A',
-      laureate.nobelPrizes ? laureate.nobelPrizes.length : 0
+      laureate.firstname && laureate.surname ? `${laureate.firstname} ${laureate.surname}` : laureate.firstname || laureate.surname || 'N/A',
+      laureate.born || 'N/A',
+      laureate.prizes ? laureate.prizes.length : 0
     ])
     filteredLaureats.value = laureatsData.value
   } catch (err) {

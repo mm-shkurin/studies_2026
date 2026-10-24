@@ -1,13 +1,10 @@
 import axios from 'axios'
 
-// Источник: https://axios-http.com/docs/intro (документация axios)
-
-// Единый класс-сервис для HTTP-запросов на axios
 class BaseApiService {
   constructor(baseURL) {
     this.client = axios.create({
       baseURL: baseURL,
-      timeout: 10000
+      timeout: 30000
     })
   }
 

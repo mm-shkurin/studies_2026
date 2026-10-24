@@ -1,9 +1,6 @@
 import BaseApiService from './baseApiService'
 import { decodeLaureatesResponse } from '../codecs/laureatsCodec.js'
 
-// Источник: https://api.nobelprize.org/v1/documentation (Nobel Prize API v1)
-
-// Класс-сервис для получения данных о лауреатах
 class LaureatsService extends BaseApiService {
   constructor() {
     super('https://api.nobelprize.org/v1')
@@ -16,15 +13,18 @@ class LaureatsService extends BaseApiService {
 
   async getLaureateByName(name) {
     const response = await this.getLaureates()
-    return response.laureates.filter(laureate =>
-      laureate.knownName && laureate.knownName.en.toLowerCase().includes(name.toLowerCase())
-    )
+    return response.laureates.filter(laureate => {
+      const fullName = laureate.firstname && laureate.surname
+        ? `${laureate.firstname} ${laureate.surname}`.toLowerCase()
+        : (laureate.firstname || laureate.surname || '').toLowerCase()
+      return fullName.includes(name.toLowerCase())
+    })
   }
 
   async getLaureatesByCategory(category) {
     const response = await this.getLaureates()
     return response.laureates.filter(laureate =>
-      laureate.nobelPrizes && laureate.nobelPrizes.some(prize => prize.category === category)
+      laureate.prizes && laureate.prizes.some(prize => prize.category === category)
     )
   }
 }

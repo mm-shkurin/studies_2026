@@ -251,3 +251,28 @@
 - Изменено: laureatsService — обновлена фильтрация по имени и категории
 - Проверка: npm run build выполнен успешно
 - Дальше: проверка в браузере
+
+## 2026-10-23 12:26 — ЛР 4: исправление валидации (API v1 структура)
+- Сделано: исправлены кодеки и компоненты под реальную структуру Nobel Prize API v1
+- Проблема: кодеки были написаны под структуру API v2, но приложение использует API v1
+- Источник: https://api.nobelprize.org/v1/prize.json и https://api.nobelprize.org/v1/laureate.json — проверен формат ответа
+- Изменено: prizesCodec.js — PrizeCodec (year, category с полными названиями chemistry/physics/literature/peace/medicine/economics, overallMotivation, laureates с id, firstname, surname, motivation, share)
+- Изменено: laureatsCodec.js — LaureateCodec (id, firstname, surname, born, died, bornCountry, bornCountryCode, bornCity, diedCountry, diedCountryCode, diedCity, gender, prizes с year, category, share, motivation, affiliations)
+- Изменено: PrizesView.vue — categories на полные названия (physics, chemistry, medicine, literature, peace, economics), маппинг на prize.year вместо awardYear, prizeAmountAdjusted заменён на 'N/A'
+- Изменено: LaureatsView.vue — маппинг на firstname + surname вместо knownName/orgName, born вместо birth.date, prizes вместо nobelPrizes
+- Изменено: prizesService.js — getPrizesByYear использует prize.year вместо awardYear
+- Изменено: laureatsService.js — getLaureateByName использует firstname + surname, getLaureatesByCategory использует prizes вместо nobelPrizes
+- Проверка: npm run build выполнен успешно
+- Результат: кодеки соответствуют реальной структуре API v1, валидация должна проходить без ошибок
+- Дальше: проверка в браузере
+
+## 2026-10-24 12:27 — ЛР 4: исправление ошибок валидации io-ts
+- Сделано: исправлены кодеки для обработки вариативности данных Nobel Prize API v1
+- Проблема: API возвращает undefined для отсутствующих полей, пустые массивы в affiliations, gender="org" для организаций
+- Изменено: prizesCodec.js — добавлены t.undefined во все union-поля (overallMotivation, firstname, surname, motivation, share); laureates может быть t.undefined
+- Изменено: laureatsCodec.js — добавлены t.undefined во все union-поля; affiliations заменён на t.unknown (структура слишком вариативна); gender добавлен literal('org')
+- Изменено: baseApiService.js — тайм-аут увеличен с 10000 до 30000 ms (API Nobel Prize отвечает медленно)
+- Изменено: удалены комментарии из decodeOrThrow.js, prizesCodec.js, laureatsCodec.js, baseApiService.js, prizesService.js, laureatsService.js, vite.config.js
+- Проверка: npm run build выполнен успешно; в браузере данные загружаются без ошибок валидации
+- Результат: io-ts валидация работает с реальными данными API v1
+- Дальше: коммит, изменение дизайна
