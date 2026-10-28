@@ -1,14 +1,9 @@
--- ЛР 4: Создание таблицы с массивом
--- Источник: пособие, стр. 91–92 (таблица schedules)
-
--- Таблица: участие пилота в гонках сезона (массив race_ID)
--- Связь с таблицей drivers: 1:N (один пилот — несколько сезонов/графиков гонок)
 
 CREATE TABLE driver_season_races (
     season_id serial NOT NULL,
     driver_ID integer NOT NULL,
     year integer NOT NULL,
-    race_ids integer[] NOT NULL,  -- массив ID гонок сезона
+    race_ids integer[] NOT NULL,
     CONSTRAINT driver_season_races_PK PRIMARY KEY (season_id),
     CONSTRAINT driver_season_races_FK FOREIGN KEY (driver_ID)
         REFERENCES drivers(driver_ID)

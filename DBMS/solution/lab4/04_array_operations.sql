@@ -1,31 +1,14 @@
--- ЛР 4: Операции с массивами
--- Источник: пособие, стр. 92–95
-
--- 1. Добавление гонки в график (конкатенация ||)
--- Источник: пособие, стр. 93 (пример с Батовой А.Д.)
--- Добавим гонку 23 для Леклера в сезоне 2024
-
 UPDATE driver_season_races
 SET race_ids = race_ids || 23
 WHERE driver_ID = 1 AND year = 2024;
-
--- 2. Добавление гонки в конец массива (array_append)
--- Источник: пособие, стр. 93 (пример с Колосовой Е.С.)
 
 UPDATE driver_season_races
 SET race_ids = array_append(race_ids, 24)
 WHERE driver_ID = 2 AND year = 2024;
 
--- 3. Добавление гонки в начало массива (array_prepend)
--- Источник: пособие, стр. 93 (пример с Колосовой Е.С.)
-
 UPDATE driver_season_races
 SET race_ids = array_prepend(0, race_ids)
 WHERE driver_ID = 2 AND year = 2024;
-
--- 4. Удаление гонки из графика (array_remove)
--- Источник: пособие, стр. 93 (пример с Ребровым А.А.)
--- Удалим гонку 0, которую только что добавили
 
 UPDATE driver_season_races
 SET race_ids = array_remove(race_ids, 0)
