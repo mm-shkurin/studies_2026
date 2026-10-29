@@ -1,6 +1,6 @@
 # Прогресс — Программная инженерия
 
-Обновлено: 2026-10-09 21:48
+Обновлено: 2026-10-29 19:20
 
 ## Работы
 
@@ -10,7 +10,7 @@
 || ЛР 1 | Диаграммы прецедентов в Visual Paradigm (вариант 10 — Таксопарк) | сдана | не указан | | `solution/lab1/photo_2026-10-01_12-28-15.jpg` |
 ||| ЛР 1 | Диаграммы прецедентов в Visual Paradigm (вариант 5 — Аэропорт) | — | не указан | | (отменена)
 || ЛР 2 | Анализ требований и сценариев (вариант 5 — Аэропорт) | сдана | не указан | | solution/lab_05/lab2/diagrams/*.puml, solution/lab_05/lab2/report.md, solution/lab_05/lab2/report.docx |
-|| ЛР 2 | Анализ требований и сценариев (вариант 10 — Таксопарк) | сдана | не указан | | solution/lab2/diagrams/*.puml, solution/lab2/report.md, solution/lab2/report.docx |
+|| ЛР 2 | Анализ требований и сценариев (вариант 10 — Таксопарк) | в работе | не указан | | solution/lab2/diagrams/*.puml, solution/lab2/report.md, solution/lab2/report.docx, solution/lab2/README_VP.md |
 || ЛР 7-8 | РГР | — | декабрь | | |
 
 ## Текущий фокус
@@ -56,7 +56,7 @@
 
 ## Следующий шаг
 
-ЛР 1-2: студент строит BPMN-модели для 3 процессов в Visual Paradigm по инструкции `README.md`, сохраняет скриншоты в `solution/lab1-2/img/` (registration.png, lending.png, replenishment.png).
+ЛР 2: студент строит UML-диаграммы в Visual Paradigm по инструкции `solution/lab2/README_VP.md` (8 диаграмм: прецеденты, трассировка, VOPC, 4 фазы последовательности, кооперация, ключевые абстракции), сохраняет скриншоты в `solution/lab2/img/`.
 
 ## Открытые вопросы
 

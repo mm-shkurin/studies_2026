@@ -58,18 +58,7 @@ def affine(text, a, b, mode):
     return result
 
 
-def read_int(prompt, minimum=None):
-    while True:
-        raw = input(prompt).strip()
-        try:
-            value = int(raw)
-        except ValueError:
-            print("Ошибка: нужно ввести целое число.")
-            continue
-        if minimum is not None and value < minimum:
-            print(f"Ошибка: число должно быть не меньше {minimum}.")
-            continue
-        return value
+
 
 
 def crack():
@@ -130,89 +119,156 @@ def crack():
 def main():
     while True:
         print()
-        print("Основное меню")
-        print("1 - Проверка математики")
-        print("2 - Выполнение варианта")
-        print("3 - Выход")
+        print("Меню:")
+        print("1 - Расширенный алгоритм Евклида")
+        print("2 - Элемент, обратный данному")
+        print("3 - Решение сравнения ax = b (mod m)")
+        print("4 - Решение системы ax + y = b, cx + y = d (mod m)")
+        print("5 - Выполнение варианта")
+        print("6 - Выход")
         choice = input("Выберите пункт: ").strip()
+
+        if choice == "6":
+            break
+        if choice not in ("1", "2", "3", "4", "5", "6"):
+            print("Ошибка: режим должен быть 1, 2, 3, 4, 5 или 6.")
+            continue
+
+        if choice == "5":
+            crack()
+            continue
 
         if choice == "1":
             while True:
-                print()
-                print("Проверка математики")
-                print("1 - Расширенный алгоритм Евклида")
-                print("2 - Элемент, обратный данному")
-                print("3 - Решение сравнения ax ≡ b (mod m)")
-                print("4 - Решение системы ax + y ≡ b, cx + y ≡ d (mod m)")
-                print("0 - Назад")
-                sub = input("Выберите пункт: ").strip()
-
-                if sub == "1":
-                    a = read_int("a = ")
-                    b = read_int("b = ")
-                    if a == 0 and b == 0:
-                        print("НОД(0, 0) не определён.")
-                        continue
-                    d, x, y = ext_gcd(a, b)
-                    print(f"d = НОД({a}, {b}) = {d}")
-                    print(f"Коэффициенты Безу: x = {x}, y = {y}")
-                    print(f"Проверка: {a} * ({x}) + {b} * ({y}) = {a * x + b * y}")
-
-                elif sub == "2":
-                    a = read_int("a = ")
-                    m = read_int("m = ", 2)
-                    d, x, _ = ext_gcd(a, m)
-                    if d != 1:
-                        print(f"НОД({a}, {m}) = {d} ≠ 1: элемента, обратного {a} по модулю {m}, не существует.")
-                        continue
-                    print(f"Коэффициент Безу при a: x = {x}")
-                    if x < 0:
-                        print(f"Коэффициент отрицательный, наименьший неотрицательный вычет: {x % m}")
-                    print(f"Обратный элемент к {a} по модулю {m}: {x % m}")
-                    print(f"Проверка: {a} * {x % m} mod {m} = {a * (x % m) % m}")
-
-                elif sub == "3":
-                    a = read_int("a = ")
-                    b = read_int("b = ")
-                    m = read_int("m = ", 2)
-                    d = ext_gcd(a, m)[0]
-                    print(f"d = НОД({a}, {m}) = {d}")
-                    solutions = solve_congruence(a, b, m)
-                    if not solutions:
-                        print(f"{b} не делится на {d}: сравнение решений не имеет.")
-                    elif d == 1:
-                        print(f"d = 1: единственное решение x = {solutions[0]} (mod {m})")
-                    else:
-                        print(f"{b} делится на {d}: решений по модулю {m} - {d}: x = " + ", ".join(map(str, solutions)))
-
-                elif sub == "4":
-                    a = read_int("a = ")
-                    b = read_int("b = ")
-                    c = read_int("c = ")
-                    d = read_int("d = ")
-                    m = read_int("m = ", 2)
-                    print(f"Вычитаем сравнения: {a - c}x ≡ {b - d} (mod {m})")
-                    g = ext_gcd(a - c, m)[0]
-                    print(f"НОД({a - c}, {m}) = {g}")
-                    solutions = solve_system(a, b, c, d, m)
-                    if not solutions:
-                        print("Система решений не имеет.")
-                    else:
-                        print(f"Решений: {len(solutions)}")
-                        for x, y in solutions:
-                            print(f"x = {x}, y = {y}")
-
-                elif sub == "0":
-                    break
-                else:
-                    print("Ошибка: выберите пункт 0-4.")
+                raw_a = input("a = ").strip()
+                try:
+                    a = int(raw_a)
+                except ValueError:
+                    print("Ошибка: нужно ввести целое число.")
+                    continue
+                raw_b = input("b = ").strip()
+                try:
+                    b = int(raw_b)
+                except ValueError:
+                    print("Ошибка: нужно ввести целое число.")
+                    continue
+                if a == 0 and b == 0:
+                    print("НОД(0, 0) не определён.")
+                    continue
+                break
+            d, x, y = ext_gcd(a, b)
+            print(f"d = НОД({a}, {b}) = {d}")
+            print(f"Коэффициенты Безу: x = {x}, y = {y}")
+            print(f"Проверка: {a} * ({x}) + {b} * ({y}) = {a * x + b * y}")
 
         elif choice == "2":
-            crack()
+            while True:
+                raw_a = input("a = ").strip()
+                try:
+                    a = int(raw_a)
+                except ValueError:
+                    print("Ошибка: нужно ввести целое число.")
+                    continue
+                raw_m = input("m = ").strip()
+                try:
+                    m = int(raw_m)
+                except ValueError:
+                    print("Ошибка: нужно ввести целое число.")
+                    continue
+                if m < 2:
+                    print("Ошибка: модуль должен быть не меньше 2.")
+                    continue
+                break
+            d, x, _ = ext_gcd(a, m)
+            if d != 1:
+                print(f"НОД({a}, {m}) = {d} ≠ 1: элемента, обратного {a} по модулю {m}, не существует.")
+            else:
+                print(f"Коэффициент Безу при a: x = {x}")
+                if x < 0:
+                    print(f"Коэффициент отрицательный, наименьший неотрицательный вычет: {x % m}")
+                print(f"Обратный элемент к {a} по модулю {m}: {x % m}")
+                print(f"Проверка: {a} * {x % m} mod {m} = {a * (x % m) % m}")
+
         elif choice == "3":
-            break
-        else:
-            print("Ошибка: выберите пункт 1-3.")
+            while True:
+                raw_a = input("a = ").strip()
+                try:
+                    a = int(raw_a)
+                except ValueError:
+                    print("Ошибка: нужно ввести целое число.")
+                    continue
+                raw_b = input("b = ").strip()
+                try:
+                    b = int(raw_b)
+                except ValueError:
+                    print("Ошибка: нужно ввести целое число.")
+                    continue
+                raw_m = input("m = ").strip()
+                try:
+                    m = int(raw_m)
+                except ValueError:
+                    print("Ошибка: нужно ввести целое число.")
+                    continue
+                if m < 2:
+                    print("Ошибка: модуль должен быть не меньше 2.")
+                    continue
+                break
+            d = ext_gcd(a, m)[0]
+            print(f"d = НОД({a}, {m}) = {d}")
+            solutions = solve_congruence(a, b, m)
+            if not solutions:
+                print(f"{b} не делится на {d}: сравнение решений не имеет.")
+            elif d == 1:
+                print(f"d = 1: единственное решение x = {solutions[0]} (mod {m})")
+            else:
+                print(f"{b} делится на {d}: решений по модулю {m} - {d}: x = " + ", ".join(map(str, solutions)))
+
+        elif choice == "4":
+            while True:
+                raw_a = input("a = ").strip()
+                try:
+                    a = int(raw_a)
+                except ValueError:
+                    print("Ошибка: нужно ввести целое число.")
+                    continue
+                raw_b = input("b = ").strip()
+                try:
+                    b = int(raw_b)
+                except ValueError:
+                    print("Ошибка: нужно ввести целое число.")
+                    continue
+                raw_c = input("c = ").strip()
+                try:
+                    c = int(raw_c)
+                except ValueError:
+                    print("Ошибка: нужно ввести целое число.")
+                    continue
+                raw_d = input("d = ").strip()
+                try:
+                    d_val = int(raw_d)
+                except ValueError:
+                    print("Ошибка: нужно ввести целое число.")
+                    continue
+                raw_m = input("m = ").strip()
+                try:
+                    m = int(raw_m)
+                except ValueError:
+                    print("Ошибка: нужно ввести целое число.")
+                    continue
+                if m < 2:
+                    print("Ошибка: модуль должен быть не меньше 2.")
+                    continue
+                break
+            print(f"Вычитаем сравнения: {a - c}x ≡ {b - d_val} (mod {m})")
+            g = ext_gcd(a - c, m)[0]
+            print(f"НОД({a - c}, {m}) = {g}")
+            solutions = solve_system(a, b, c, d_val, m)
+            if not solutions:
+                print("Система решений не имеет.")
+            else:
+                print(f"Решений: {len(solutions)}")
+                for x, y in solutions:
+                    print(f"x = {x}, y = {y}")
 
 
 if __name__ == "__main__":
