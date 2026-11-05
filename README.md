@@ -27,7 +27,7 @@
 |---|---|---|
 | ProgPractice | ЛР 1–5 — последнее ПЗ (дат нет) | ЛР 2: /check-lab ProgPractice 2 solution (вариант 5 — Аватар) |
 | SE | 01.09–30.12.26 (методика старая) | ЛР 2: строить UML-диаграммы в Visual Paradigm по README_VP.md (вариант 10) или solution/lab_05/lab2/README_VP.md (вариант 5), сохранять скриншоты в img/ |
-| DBMS | ЛР 7 — неделя 13 | ЛР 7: `/check-lab DBMS 7 plan` |
+| DBMS | ЛР 7 — неделя 13 | ЛР 7: выбрать 1–2 таблицы, написать процедуры и функции, проверить на PostgreSQL, собрать отчёт, `/check-lab DBMS 7 solution` |
 | WebDev | не найдено | ЛР 5 готова к сдаче (PWA, service worker, кеширование) |
 | OOAD | — | получить задания |
 | NLP | — | выполнить ноутбук lab2.ipynb, проверить критерии приёмки (/check-lab NLP 2 solution) |
