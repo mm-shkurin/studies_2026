@@ -1,0 +1,19 @@
+№ датасета,Задача,Название датасета,Ссылка на скачивание для студентов,Что предсказывать (название признака)
+К1,Классификация,Задержки рейсов,https://drive.google.com/file/d/1YXPZeTJ6XALPJnA95TiK8jb4odI_FH9t/view?usp=share_link,Delay
+К2,Классификация,Ближайшие к Земле объекты,https://drive.google.com/file/d/1BfjozOw-7m9onFCdEjVYw7qXg9x6BnT-/view?usp=share_link,hazardous
+К3,Классификация,Раунды CS:GO,https://drive.google.com/file/d/1_cp9Z9Dm297VvfJB-cVlB_Z_L4sFZg4f/view?usp=share_link,bomb_planted
+К4,Классификация,Срабатывания датчика дыма,https://drive.google.com/file/d/1UYJZIKktZYLLQffp7qmEM1y9wz5zbo6j/view?usp=share_link,Fire Alarm
+К5,Классификация,Дожди в Австралии,https://www.kaggle.com/datasets/jsphyg/weather-dataset-rattle-package,RainTomorrow
+К6,Классификация,Определение наличия сердечного заболевания,https://archive.ics.uci.edu/dataset/45/heart+disease,num
+К7,Классификация,Мошенничество с кредитными картами,https://www.kaggle.com/datasets/dhanushnarayananr/credit-card-fraud,fraud
+К8,Классификация,Показатели здоровья при диабете,https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset?select=diabetes_012_health_indicators_BRFSS2015.csv,diabetes_012
+,,,,
+,,,,
+Р1,Регрессия,Стоимость автомобилей в Молдавии,https://drive.google.com/file/d/1MeTaj8QjgSVKXn9FC-70vGhMj6LxiySM/view?usp=share_link,Price(euro)
+Р2,Регрессия,Производительность электростанции,https://drive.google.com/file/d/1bfhtgeve_tLBKFjcac-pLnfmulcI8CZ1/view?usp=share_link,Appliances
+Р3,Регрессия,Продолжительность поездки в такси,https://drive.google.com/file/d/1rNHUFwVqMgfVrlF2TJhTjClSgAV94BtO/view?usp=share_link,trip_duration
+Р4,Регрессия,Стоимость дома в Мумбаи,https://drive.google.com/file/d/1mpuQWoBEVsAYL7JIMvkAHkdaKtLOz_b2/view?usp=share_link,price
+Р5,Регрессия,Дегустация вина,https://archive.ics.uci.edu/ml/datasets/Wine+Quality,quality
+Р6,Регрессия,Стоимость алмаза,https://www.kaggle.com/datasets/shivam2503/diamonds,price
+Р7,Регрессия,Стоимость дома в округе Кинг,https://www.kaggle.com/datasets/harlfoxem/housesalesprediction,price
+Р8,Регрессия,Стоимость подержанного автомобиля,https://www.kaggle.com/datasets/lepchenkov/usedcarscatalog,price_usd
