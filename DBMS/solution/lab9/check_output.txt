@@ -1,0 +1,86 @@
+CREATE DATABASE
+COMMENT
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+DROP PROCEDURE
+DROP PROCEDURE
+DROP TABLE
+CREATE PROCEDURE
+CREATE TABLE
+CREATE PROCEDURE
+NOTICE:  procedure result_select(pg_catalog.int4,pg_catalog.int4,pg_catalog.int4) does not exist, skipping
+NOTICE:  procedure fill_may() does not exist, skipping
+NOTICE:  table "may_results" does not exist, skipping
+INSERT 0 2
+INSERT 0 2
+INSERT 0 3
+INSERT 0 2
+INSERT 0 1
+INSERT 0 2
+INSERT 0 4
+CALL
+CALL
+CALL
+CALL
+CALL
+TRUNCATE TABLE
+CALL
+ race_id | driver_id | car_id | position | points 
+---------+-----------+--------+----------+--------
+       1 |         1 |      1 |        1 |   25.0
+       1 |         2 |      2 |        2 |   18.0
+(2 rows)
+
+DO
+NOTICE:  Результат: 1, Monaco Grand Prix, 1, Charles Leclerc, 1, SF-24, 1, 25.0
+NOTICE:  Результат: 1, Monaco Grand Prix, 2, Lewis Hamilton, 2, W15, 2, 18.0
+NOTICE:  Результат: 2, British Grand Prix, 2, Lewis Hamilton, 2, W15, 1, 25.0
+NOTICE:  Результат: 2, British Grand Prix, 1, Charles Leclerc, 3, SF-24B, 2, 18.0
+NOTICE:  Результат: 1, Monaco Grand Prix, 1, Charles Leclerc, 1, SF-24, 1, 25.0
+NOTICE:  Результат: 1, Monaco Grand Prix, 2, Lewis Hamilton, 2, W15, 2, 18.0
+NOTICE:  Результат: 1, Monaco Grand Prix, 1, Charles Leclerc, 1, SF-24, 1, 25.0
+NOTICE:  Результат: 2, British Grand Prix, 1, Charles Leclerc, 3, SF-24B, 2, 18.0
+NOTICE:  Результат: 1, Monaco Grand Prix, 1, Charles Leclerc, 1, SF-24, 1, 25.0
+NOTICE:  Результат: 1, Monaco Grand Prix, 1, Charles Leclerc, 1, SF-24, 1, 25.0
+NOTICE:  OK may

@@ -1,0 +1,77 @@
+TRUNCATE TABLE
+=== transaction with savepoint ===
+BEGIN
+INSERT 0 1
+INSERT 0 1
+SAVEPOINT
+INSERT 0 1
+INSERT 0 1
+ROLLBACK
+NOTICE:  trigger team_change_notice: op INSERT on table teams
+NOTICE:  trigger team_change_notice: op INSERT on table teams
+NOTICE:  trigger team_change_notice: op INSERT on table teams
+NOTICE:  trigger team_change_notice: op INSERT on table teams
+COMMIT
+ team_id |   name   |   base    
+---------+----------+-----------
+       1 | Ferrari  | Maranello
+       2 | Mercedes | Brackley
+(2 rows)
+
+DO
+=== DML trigger driver_audit ===
+NOTICE:  OK transaction
+INSERT 0 1
+UPDATE 1
+DELETE 1
+ operation |  userid  | driver_id |      name       |   country    | team_id 
+-----------+----------+-----------+-----------------+--------------+---------
+ I         | postgres |         1 | Charles Leclerc | Monaco       |       1
+ U         | postgres |         1 | Charles Leclerc | РњРѕРЅР°РєРѕ |       1
+ D         | postgres |         1 | Charles Leclerc | РњРѕРЅР°РєРѕ |       1
+(3 rows)
+
+NOTICE:  OK audit
+DO
+=== DML trigger brud ===
+NOTICE:  OK forbid
+DO
+INSERT 0 1
+ sponsor_id | name  
+------------+-------
+          1 | Rolex
+(1 row)
+
+=== DML trigger team_change_notice ===
+NOTICE:  trigger team_change_notice: op UPDATE on table teams
+UPDATE 1
+=== event triggers ===
+NOTICE:  event trigger: event ddl_command_end, tag CREATE TABLE
+CREATE TABLE
+NOTICE:  event trigger: DROP TABLE dropped public.lab8_event_probe (table)
+NOTICE:  event trigger: DROP TABLE dropped public.lab8_event_probe (type)
+NOTICE:  event trigger: DROP TABLE dropped public.lab8_event_probe[] (type)
+NOTICE:  event trigger: DROP TABLE dropped lab8_event_probe_pkey on public.lab8_event_probe (table constraint)
+NOTICE:  event trigger: DROP TABLE dropped public.lab8_event_probe_pkey (index)
+NOTICE:  event trigger: event ddl_command_end, tag DROP TABLE
+DROP TABLE
+DO
+BEGIN
+NOTICE:  OK event triggers
+NOTICE:  event trigger: DROP TRIGGER dropped brud on public.sponsors (trigger)
+NOTICE:  event trigger: event ddl_command_end, tag DROP TRIGGER
+DROP TRIGGER
+ROLLBACK
+       tgname       
+--------------------
+ brud
+ driver_audit
+ team_change_notice
+(3 rows)
+
+     evtname     |    evtevent     
+-----------------+-----------------
+ notice_ddl_end  | ddl_command_end
+ notice_sql_drop | sql_drop
+(2 rows)
+

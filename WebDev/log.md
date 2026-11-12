@@ -270,6 +270,16 @@
 - Сделано: исправлены кодеки для обработки вариативности данных Nobel Prize API v1
 - Проблема: API возвращает undefined для отсутствующих полей, пустые массивы в affiliations, gender="org" для организаций
 - Изменено: prizesCodec.js — добавлены t.undefined во все union-поля (overallMotivation, firstname, surname, motivation, share); laureates может быть t.undefined
+
+## 2026-11-07 09:17 — ЛР 5: проверка скептиком (solution)
+- Сделано: запущен скептик для проверки решения ЛР 5
+- Вердиект: доработать
+- HIGH: иконки PWA не соответствуют требованиям (SVG вместо PNG 192px/512px), service worker и manifest не будут скопированы в dist (vite.config.js не настроен), сборка не выполнена (папка dist/ отсутствует)
+- MED: HTTPS не настроен, README.md не обновлён
+- LOW: 3 находки (README.md шаблон, .gitignore, нет инструкции по проверке PWA)
+- Вопросы к пользователю: PNG или SVG для иконок, какой плагин для копирования файлов, как проверять офлайн-режим
+- Обновлено: проверка ЛР 5 (solution) в progress.md, статус ЛР 5 — в работе, текущий фокус, следующий шаг, открытые вопросы
+- Дальше: исправление HIGH находок
 - Изменено: laureatsCodec.js — добавлены t.undefined во все union-поля; affiliations заменён на t.unknown (структура слишком вариативна); gender добавлен literal('org')
 - Изменено: baseApiService.js — тайм-аут увеличен с 10000 до 30000 ms (API Nobel Prize отвечает медленно)
 - Изменено: удалены комментарии из decodeOrThrow.js, prizesCodec.js, laureatsCodec.js, baseApiService.js, prizesService.js, laureatsService.js, vite.config.js
