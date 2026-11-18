@@ -184,3 +184,9 @@ otes/Лекция N….md.
 - Вердикт: начинать
 - HIGH/MED: 0 открытых; LOW: 1 (обосновать non-intersection) — внесено в карту.
 - Дальше: установить pyod/umap-learn; создать `solution/lab3/lab3.ipynb`.
+
+## 2026-11-18 10:52 — ЛР 3: ноутбук выбросы и аномалии
+- Сделано: установлен `pyod` 3.6.8 и `umap-learn` (`umap` 0.6.0) в venv; в `solution/requirements.txt` добавлены зависимости; создан `solution/lab3/lab3.ipynb` (43 ячейки: пайплайн ЛР 2 + раздел 1.6 + 1.7 + production).
+- Решение: continuous-only; IQR∩Z (|z|>3, вне курса); удаление пересечений; затем IForest∩OCSVM + UMAP; non-intersection оставлены с обоснованием.
+- Результат nbconvert: train IQR∩Z удалено 39, test 13; аномалии train 33 / test 75; итог train=(2952, 7), test=(669, 7), пропусков 0. Height max после очистки 24.
+- Дальше: `/check-lab ProgPractice 3 solution`.

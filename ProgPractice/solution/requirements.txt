@@ -9,6 +9,9 @@ matplotlib
 seaborn
 missingno
 openpyxl
+# ЛР 3: аномалии и понижение размерности (лекция 3)
+pyod
+umap-learn
 # запуск и проверка ноутбуков
 jupyter
 nbconvert
