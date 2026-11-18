@@ -190,3 +190,9 @@ otes/Лекция N….md.
 - Решение: continuous-only; IQR∩Z (|z|>3, вне курса); удаление пересечений; затем IForest∩OCSVM + UMAP; non-intersection оставлены с обоснованием.
 - Результат nbconvert: train IQR∩Z удалено 39, test 13; аномалии train 33 / test 75; итог train=(2952, 7), test=(669, 7), пропусков 0. Height max после очистки 24.
 - Дальше: `/check-lab ProgPractice 3 solution`.
+
+## 2026-11-18 10:58 — ЛР 3: проверка скептиком (solution) и правка MED
+- Сделано: `/check-lab ProgPractice 3 solution`; закрыты MED (contamination/test≫train, IQR∧¬Z vs ∩, интерпретация аномалий, pie labels); outputs сохранены через nbconvert; статус ЛР 3 → `готова`.
+- Вердикт: сдавать
+- Результат: train IQR∩Z 39 (Z ⊆ IQR), test 13; аномалии train 33 / test 75; итог (2952, 7) / (669, 7).
+- Дальше: сдать ЛР 1–3; при необходимости `/defense ProgPractice 3`.
