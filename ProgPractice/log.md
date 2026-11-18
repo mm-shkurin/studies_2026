@@ -147,3 +147,17 @@
   - Все признаки с пропусками (включая Whole_weight) обрабатываются динамически через numeric_cols
 - Результат: успешное выполнение через jupyter nbconvert --execute
 - Дальше: /check-lab ProgPractice 2 solution (повторная проверка)
+
+## 2026-11-18 10:27 — материалы с вики: лекции 1–5, ЛР 1–4, титулы ДЗ
+- Сделано: снят снимок https://wiki.pmifi.ru/disciplines/programming-workshop-bachelors-5sem (обновление на вики 2026-11-07). Страницы ЛР 1–4 → materials/labs/ и materials/notes/; главная страница → 
+otes/disciplines__programming-workshop-bachelors-5sem.md. PDF слайдов лекций 1–5 (export Google Slides) и ноутбуки check_lifelines, missings_cat, outliers, новый model-selection → materials/lectures/. Титульники ДЗ ФИТ/МО → materials/templates/. Обновлены варианты materials/variants/, 	emplate.ipynb, INDEX.md, 	ask.md, progress.md, строка ProgPractice в корневом README.md. Текст PDF извлечён в 
+otes/Лекция N….md.
+- Новое относительно прошлого снимка: условия ЛР 2–4 на вики; лекции 4–5 (PDF); ноутбук Л5 Лекция 5 - model-selection.ipynb (244 ячейки); титулы ДЗ; ноутбук Л3 заменён (66 ячеек, pyod/umap).
+- Не выложено на вики: условие ЛР 5, лекции 6–9, демоэкзамен.
+- Дальше: сдать ЛР 1–2; /start-lab ProgPractice 3.
+
+## 2026-11-18 10:30 — ЛР 3: карта
+- Сделано: построена «Карта ЛР 3» в `progress.md` по `materials/labs/ЛР 3. Выбросы и аномалии.md`, `INDEX.md`, слайдам `notes/Лекция 3. Выбросы и аномалии.md`, ноутбуку `lectures/Лекция 3 - outliers.ipynb`; статус ЛР 3 → `в работе`; обновлена строка ProgPractice в корневом `README.md`.
+- Источники: вики-условие (гистограммы, boxplot, границы на гистограммах, аномалии, понижение размерности, удаление или обоснованный отказ); слайды (IQR, Z-score; Isolation Forest, OCSVM, DBSCAN); ноутбук (IQR, пересечение с Z-score, `pyod` IForest/OCSVM, UMAP).
+- Результат: в venv `studies2026-progpractice` нет `pyod` и `umap` — установка перед решением; в карте отмечен `Height` (max 113) как кандидат на выброс.
+- Дальше: `/check-lab ProgPractice 3 plan`.
