@@ -1,0 +1,19 @@
+@startuml SequencePhase1
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor "Пассажир" as passenger
+participant "RideUI" as ui <<Boundary>>
+participant "RideController" as controller <<Control>>
+participant "LocationService" as location <<Entity>>
+participant "DriverRepository" as drivers <<Entity>>
+
+passenger -> ui: searchVehicles(location)
+ui -> controller: findAvailableVehicles(location)
+controller -> location: getCoordinates(location)
+location --> controller: coordinates
+controller -> drivers: findNearbyDrivers(coordinates, radius)
+drivers --> controller: availableDrivers
+controller --> ui: availableDrivers
+ui --> passenger: showDrivers(drivers)
+@enduml

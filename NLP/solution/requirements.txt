@@ -5,3 +5,9 @@ seaborn
 jupyter
 torch
 scikit-learn
+requests
+beautifulsoup4
+nltk
+gensim
+pyarrow
+pymorphy3

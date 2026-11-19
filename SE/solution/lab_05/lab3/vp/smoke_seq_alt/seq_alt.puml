@@ -1,0 +1,11 @@
+@startuml
+title Sequence with alt only
+control ":A" as A
+boundary ":B" as B
+A -> B : request()
+alt ok
+  B --> A : data
+else fail
+  B --> A : error
+end
+@enduml

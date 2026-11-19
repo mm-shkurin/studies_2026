@@ -1,0 +1,24 @@
+@startuml
+title getMovies — чтение внешнего каталога
+autonumber
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam shadowing false
+control ":ScheduleController" as Ctrl
+boundary ":CinemaCatalogBoundary" as Proxy
+boundary ":LegacyMovieCatalogBoundary" as Legacy
+control ":MovieMapper" as Mapper
+Ctrl -> Proxy : getMovies(filter)
+Proxy -> Legacy : queryMovies(filter)
+alt каталог доступен
+  Legacy --> Proxy : MovieRow[]
+  loop для каждой строки
+    Proxy -> Mapper : fromRow(row)
+    Mapper --> Proxy : Movie
+  end
+  Proxy --> Ctrl : Movie[]
+else ошибка внешнего каталога
+  Legacy --> Proxy : unavailable
+  Proxy --> Ctrl : CatalogUnavailable
+end
+@enduml

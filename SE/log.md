@@ -197,3 +197,21 @@
 - Результат: инструкция готова, PlantUML-исходники образца (материалы/lab_3/diagrams/*.puml) служат схемой для переноса. Предметная область — компьютерные процессы аэропорта (как в ЛР 2 вариант 5).
 - Решения: структура диаграмм следует методологии главы 3 UML (2).pdf (стр. 84–101, раздел 3.6 «Проектирование») и образцу ЛР 3 (кинотеатр). Инструмент — Visual Paradigm.
 - Дальше: студент строит диаграммы в Visual Paradigm по инструкции, сохраняет скриншоты в img/.
+
+## 2026-11-12 13:28 � �� 3: smoke-���� PlantUML>Visual Paradigm (������� 1)
+- �������: ���������� PlantUML-VP Plugin v1.0.0 � `%APPDATA%\VisualParadigm\plugins\plugin-plantuml-vp`; ������� CLI-������ ����� `Plugin.bat` �� �������� `materials/lab_3/diagrams`; ������� `solution/lab_05/lab3/vp/PIPELINE.md`, `import-plantuml.ps1`, smoke-������� `AirportDesign_smoke2.vpp` / `seq_smoke.vpp` / `seq_alt.vpp` / `deploy_smoke.vpp`. ������ class ��������� � GUI VP CE 18.1 (��������� �����, ����������� Diagram Patched). ��������� `progress.md`, �������� `README.md` (������).
+- ���������: class / ������� sequence / sequence � alt / deployment ������������� (Diagram Count ? 1). Sequence � `loop` ������ `alt` � NPE � `SequenceDiagramImporter.extractGrouping`. CLI `ExportDiagramImage` ����� ������� ��� ����� ������ PNG �� layout-����� � GUI; � ���� Project>Import ���������� ����� PlantUML.... ���������� `<<boundary>>`/`<<control>>`/`<<entity>>` �������� robustness-��������.
+- �������: ��� ����� � CLI-������ + ���������/������� �� GUI ����� Diagram Patched; sequence ��� �� 3 ������ ��� ��������� �����������.
+- ������: ������� `solution/lab_05/lab3/diagrams/*.puml` ��� ���������, ������ � `AirportDesign.vpp`, ��������� � `img/`.
+
+## 2026-11-12 13:50 � �� 2: ������ �������� � Visual Paradigm �� README_VP
+- �������: ������������� PlantUML (`@startuml` ��� �����, ��� `skinparam style strictuml`) � `solution/lab2/vp/puml_clean/`; �� ������ ����� ������������� � `solution/lab2/vp/TaxiPark.vpp` ����� PlantUML-VP Plugin CLI. ������ ������ � VP CE 18.1.
+- ���������: Diagram Count = 10 (01 use case, 02 traceability, 03 VOPC, 04�07 sequence, 08 collaboration?2, 09 key abstractions). ������ GUI �No @startuml/@enduml found� ��������� ��� ������� ����� `diagrams/` � PNG ��� ����������������� ���������� � ��� ������� ������������ ������ `.puml` �� `vp/puml_clean/`.
+- �������: ������ �� ������ �����; collaboration ������ �� �� ������ object-��������� (��� ���������� � ����� ��� ��������� �������).
+- ������: ������� � VP ��������� Diagram Patched, ������ layout, ������ ��������� �� README_VP.
+
+## 2026-11-19 21:30 — ЛР 4–6 (вариант 5): инструкции
+- Сделано: созданы пошаговые инструкции `solution/lab_05/lab4/README.md` (развёртывание и UML-модели аэропорта по образцу lab_4), `solution/lab_05/lab5/README.md` (BPMN: покупка билета — первый из пяти процессов), `solution/lab_05/lab6/README.md` (BPMN: регистрация, управление бронью, отмена/возврат, планирование рейсов). Обновлены `task.md`, `progress.md`.
+- Результат: в папке варианта 5 есть инструкции для ЛР 4, 5 и 6; решения ещё не строились.
+- Решения: ЛР 4 продолжает UML-линию «Аэропорт»; ЛР 5–6 — BPMN в том же домене (5 процессов, разбиение 1+4 как в образце кафедры). Зафиксирован риск: у Бояркина «вариант 5» — логистика, не аэропорт.
+- Дальше: после ЛР 3 — /start-lab SE 4 (вариант 5) или строить диаграммы по README lab4.

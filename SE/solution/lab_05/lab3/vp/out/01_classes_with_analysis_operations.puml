@@ -1,0 +1,37 @@
+@startuml
++entity Ticket {
+	+markPaid(transactionId)
+	+cancel()
+	+getStatus()
+}
++entity BookingOrder {
+	+getTotal()
+	+getExpiresAt()
+}
++entity MovieSession {
+	+currentSeatStates()
+	+lockSeats(seats, timeout)
+	+confirmSeatSold(seat, ticketId)
+	+releaseSeat(seat, ticketId)
+}
++class NotificationBoundary <<boundary>> {
+	+sendTicket(ticketId, operationId)
+}
++class PaymentGatewayBoundary <<boundary>> {
+	+charge(amount, operationId)
+}
++class CinemaCatalogBoundary <<boundary>> {
+	+getPublishedSessions(date)
+}
++class BookingController <<control>> {
+	+listSessions(date)
+	+reserveSeats(sessionId, seats)
+	+pay(orderId, operationId)
+	+getPaidTicket(orderId)
+}
++class BookingUI <<boundary>> {
+	+listSessions(date)
+	+showSeatMap(sessionId)
+	+showPaymentResult(result)
+}
+@enduml

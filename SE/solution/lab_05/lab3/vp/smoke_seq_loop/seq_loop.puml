@@ -1,0 +1,14 @@
+@startuml
+title Sequence with nested loop inside alt
+control ":A" as A
+boundary ":B" as B
+A -> B : request()
+alt ok
+  loop each item
+    B -> B : map(item)
+  end
+  B --> A : data
+else fail
+  B --> A : error
+end
+@enduml

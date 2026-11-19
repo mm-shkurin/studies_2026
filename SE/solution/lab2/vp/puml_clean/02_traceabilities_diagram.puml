@@ -1,0 +1,27 @@
+@startuml
+allowmixing
+package "Use Cases" {
+  usecase "Заказать такси" as uc_purchase
+  usecase "Выполнить поездку" as uc_execute
+}
+
+package "Use-Case Realizations" {
+  class "PurchaseRealization" as r_purchase <<use-case realization>>
+  class "ExecuteRealization" as r_execute <<use-case realization>>
+}
+
+package "Design Model" {
+  class RideController
+  class Ride
+  class DriverController
+  class Driver
+}
+
+r_purchase ..> uc_purchase : <<trace>>
+r_execute ..> uc_execute : <<trace>>
+
+r_purchase ..> RideController
+r_purchase ..> Ride
+r_execute ..> DriverController
+r_execute ..> Driver
+@enduml

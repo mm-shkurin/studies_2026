@@ -1,0 +1,8 @@
+@startuml
+title Simple sequence smoke test
+autonumber
+control ":ScheduleController" as Ctrl
+boundary ":CinemaCatalogBoundary" as Proxy
+Ctrl -> Proxy : getMovies(filter)
+Proxy --> Ctrl : Movie[]
+@enduml
